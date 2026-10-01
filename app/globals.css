@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/* ── Design tokens, lifted 1:1 from Parth Portfolio.dc.html ────────────── */
+@theme {
+  --color-ink: #0f0f0e;
+  --color-bone: #f1f0ea;
+  --color-lime: oklch(0.86 0.17 125);
+  --color-violet: oklch(0.72 0.17 300);
+
+  --color-surface: #1a1a18;
+  --color-surface-2: #1c1c1a;
+  --color-surface-3: #232321;
+  --color-row-hover: #151514;
+
+  --color-line: #262624;
+  --color-line-2: #33332f;
+
+  --color-mute-1: #b4b2a9;
+  --color-mute-2: #8d8b83;
+  --color-mute-3: #6b6a63;
+  --color-mute-4: #5d5c56;
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, Menlo, monospace;
+
+  /* The overshoot curve the design uses on every springy hover */
+  --ease-boing: cubic-bezier(0.3, 1.6, 0.5, 1);
+
+  /* Fluid display sizes. Each one is pinned to the design's own two
+     measurements: the mobile-390 value and the desktop-1280 value. */
+  --text-hero: clamp(4rem, 10.337vw + 1.481rem, 9.75rem);        /* 64 → 156 */
+  --text-page: clamp(3.5rem, 9.888vw + 1.089rem, 9rem);          /* 56 → 144 */
+  --text-contact: clamp(3.5rem, 8.989vw + 1.309rem, 8.5rem);     /* 56 → 136 */
+  --text-about: clamp(2.5rem, 3.596vw + 1.624rem, 4.5rem);       /* 40 → 72  */
+  --text-section: clamp(2.25rem, 2.247vw + 1.703rem, 3.5rem);    /* 36 → 56  */
+  --text-panel: clamp(1.875rem, 3.82vw + 0.944rem, 4rem);        /* 30 → 64  */
+  --text-sendoff: clamp(2.75rem, 5.843vw + 1.326rem, 6rem);      /* 44 → 96  */
+}
+
+/* These must live in @layer base. Unlayered rules outrank everything inside
+   Tailwind's layers, so an unlayered `a { color: inherit }` would silently beat
+   every text-* utility applied to a link. */
+@layer base {
+  html {
+    background: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-display);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+/* ── Follow-cursor: hide the native one on pointer devices only ────────── */
+@media (hover: hover) and (pointer: fine) {
+  html.has-neural-cursor,
+  html.has-neural-cursor * {
+    cursor: none !important;
+  }
+}
+
+/* ── temperature range input ───────────────────────────────────────────── */
+.temp-range {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  outline: none;
+}
+.temp-range::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 999px;
+  background: var(--color-line-2);
+}
+.temp-range::-moz-range-track {
+  height: 3px;
+  border-radius: 999px;
+  background: var(--color-line-2);
+}
+.temp-range::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5.5px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-lime);
+  transition: transform 0.15s var(--ease-boing);
+}
+.temp-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-lime);
+}
+.temp-range:active::-webkit-slider-thumb {
+  transform: scale(1.3);
+}
+
+/* ── skills marquee ────────────────────────────────────────────────────── */
+@keyframes marquee-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.marquee-track {
+  animation: marquee-drift var(--marquee-duration, 34s) linear infinite;
+}
+.marquee-shell:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ── the diagonal hatch standing in for screenshots ────────────────────── */
+.hatch {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-surface-2) 0 10px,
+    var(--color-surface-3) 10px 20px
+  );
+}
+
+.caret-blink {
+  animation: caret-blink 1.1s steps(1) infinite;
+}
+@keyframes caret-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+::selection {
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .caret-blink {
+    animation: none;
+  }
+}
