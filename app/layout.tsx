@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Geist_Mono } from "next/font/google";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import LoadingScreen from "@/components/LoadingScreen";
 import MotionProvider from "@/components/MotionProvider";
 import NeuralCursor from "@/components/NeuralCursor";
 import "./globals.css";
@@ -26,11 +27,11 @@ export const metadata: Metadata = {
     template: "%s · Parth Sood",
   },
   description:
-    "Applied AI Engineer. I ship agents, RAG systems and evals that survive contact with actual users.",
+    "Applied AI engineer. Clinical NLP and cohort pipelines by day; vector indexes, agent systems and the evals that keep them honest by night.",
   openGraph: {
     title: "Parth Sood — Applied AI Engineer",
     description:
-      "Agents, retrieval and evals that survive contact with actual users.",
+      "Clinical NLP, retrieval infrastructure and the evals that keep agents honest.",
     type: "website",
   },
 };
@@ -47,6 +48,7 @@ export default function RootLayout({
     <html lang="en" className={`${bricolage.variable} ${geistMono.variable}`}>
       <body>
         <MotionProvider>
+          <LoadingScreen />
           <NeuralCursor />
           <Nav />
           <main>{children}</main>

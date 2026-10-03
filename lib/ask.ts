@@ -9,64 +9,74 @@ type Canned = { match: RegExp; answer: string };
 
 const CANNED: Canned[] = [
   {
-    match: /\b(rag|retriev|vector|embed|pgvector|chunk)\w*/i,
+    match: /\b(rag|retriev|vector|embed|pgvector|hnsw|index|chunk|search)\w*/i,
     answer:
-      "DocPilot is the big one — a RAG copilot over 40k internal docs, built on Python, pgvector and LangGraph. It cut support tickets 62%. The hard part was never the retrieval, it was the chunking strategy and knowing when to say “I don’t know”.",
+      "Two angles. MemoryWeave does retrieval as a three-tier memory — episodic vector recall plus live knowledge-graph traversal plus working context, merged under a token budget, which came out ~38% cheaper than dumping the full buffer. HNSW Vector DB goes a layer lower: the whole index written from scratch in Rust, no external ANN library, 98% recall at 1M vectors.",
   },
   {
-    match: /\b(eval|benchmark|test|judge|regress)\w*/i,
+    match: /\b(rust|performance|low.?level|systems|memory|mmap|concurren|spark|pyspark|distributed|scale|telemetry|isro)\w*/i,
     answer:
-      "Evals are the thing I get evangelical about. Evalbench is a regression suite for LLM features — TypeScript, LLM-as-judge, wired into CI — and it made releases 3× faster because nobody had to hand-check prompts any more. Principle 02: write the evals first.",
+      "HNSW Vector DB is the Rust one — hand-rolled Hierarchical Navigable Small World index, memory-mapped persistence, parallel search via Rayon, REST API over Axum. The point was to stop treating HNSW as a black box and actually control graph connectivity, beam width and the recall-versus-latency trade.",
   },
   {
-    match: /\b(agent|tool.?use|function.?call|orchestrat)\w*/i,
+    match: /\b(eval|benchmark|test|judge|regress|measur|accurac)\w*/i,
     answer:
-      "Three agent projects: Murmur, a realtime voice agent for bookings at 480ms p50; Tidy, which triages a messy inbox over the Gmail API; and DocPilot’s retrieval loop. The lesson from all three is that tool schemas are product design, not plumbing.",
+      "Evals get built alongside, not after. Ollive ships a 45-prompt battery with LLM-as-judge scoring to compare an open-weights assistant against a frontier one. Clinical Intelligence Agent runs Ragas plus custom clinical accuracy evals. Terra Intelligence Engine has 50 unit and integration tests that run in under two seconds.",
   },
   {
-    match: /\b(latenc|speed|fast|p50|p99|ms)\w*/i,
+    match: /\b(agent|multi.?agent|tool.?use|function.?call|orchestrat|langgraph|mcp)\w*/i,
     answer:
-      "Murmur runs at 480ms p50 end-to-end — speech in, speech out. Getting there meant streaming every stage, speculative TTS on the first clause, and accepting a slightly worse model for a much better conversation.",
+      "Clinical Intelligence Agent is a four-agent pipeline — extract, retrieve, verify, synthesise — over unstructured clinical text, on LangGraph with MCP, running entirely on local and free-tier inference at zero ongoing cost. MemoryWeave uses LangGraph for orchestration too. AgentReadiness comes at agents from the other side: scoring whether a site is even legible to one.",
   },
   {
-    match: /\b(stack|tech|tool|language|framework|python|typescript)\w*/i,
+    match: /\b(health|clinical|medical|patient|wearable|sensor|ehr|bio|pharma)\w*/i,
     answer:
-      "Python and TypeScript day to day. PyTorch, LangGraph, pgvector, FastAPI, Next.js, Modal, Weights & Biases, Docker. I pick boring infrastructure on purpose so the interesting part stays in the model layer.",
+      "Healthcare is the day job. At Aspect Ratio I build ML pipelines for patient cohort extraction from high-dimensional clinical data, and bio-NLP on top — BioBERT over EHR notes, PubMedBERT over publications, UMAP plus BERTopic to surface prescribing patterns and physician referral networks. The side projects run parallel: Terra Intelligence Engine over wearable and CGM data, and Clinical Intelligence Agent for the ~80% of clinical data that lives in unstructured notes.",
   },
   {
-    match: /\b(hire|hiring|available|role|job|work with|freelance|contract)\w*/i,
+    match: /\b(cost|cheap|free|budget|local|ollama|self.?host)\w*/i,
     answer:
-      "Yes — open to applied AI roles and freelance builds. Reply time is under 48h, which is faster than most agents. The contact page has the form, or just email parth@yourdomain.dev.",
+      "Clinical Intelligence Agent runs at $0/month — local Ollama with a Groq free-tier fallback for the latency-sensitive synthesis step. Ollive is the same instinct: open-weights Qwen2.5 on Hugging Face Spaces against Gemini Flash, both on free tiers, measured honestly against each other.",
   },
   {
-    match: /\b(contact|email|reach|dm|message|linkedin|github)\w*/i,
+    match: /\b(latenc|speed|fast|p50|p95|ms|throughput)\w*/i,
     answer:
-      "parth@yourdomain.dev is the fastest route. Also @parthsood on GitHub and Hugging Face, /in/parthsood on LinkedIn.",
+      "Where it is measured: MemoryWeave builds context in ~3.5s on Hugging Face inference, ~800ms on Groq. Ollive's frontier path answers in ~0.8–1.5s against ~3–5s for the open-weights one. Clinical Intelligence Agent synthesises a 500-word summary in ~1.1s on Groq versus ~8s fully local.",
   },
   {
-    match: /\b(lab|experiment|side.?project|weekend|fun)\w*/i,
+    match: /\b(stack|tech|tool|language|framework|python|typescript|next)\w*/i,
     answer:
-      "The lab is where the half-baked things live: a linter that rejects PRs whose commit messages aren’t haikus, two agents negotiating over a used couch, a game about writing the shortest working prompt. Some shipped. Fridge Vision exploded.",
+      "Python and TypeScript day to day, Rust when the data structure is the point. LangGraph, FastAPI, Next.js, PostgreSQL with pgvector, MCP, Langfuse for tracing, Docker and Vercel for shipping. Boring infrastructure on purpose so the interesting part stays in the model layer.",
   },
   {
-    match: /\b(who|about|background|yourself|experience|career|year)\w*/i,
+    match: /\b(hire|hiring|available|role|job|work with|freelance|contract|open to)\w*/i,
     answer:
-      "Applied AI Engineer, currently shipping agents and evals. Before that: ML engineering on search and retrieval, and a stretch on a data platform. B.Tech in Computer Science. I sit between research and product — taking what models can do this month and turning it into something people rely on.",
+      "Yes — open to applied AI roles and freelance builds, replies within 48h. The contact page has the form, or email works.",
   },
   {
-    match: /\b(vision|image|multimodal|photo|ocr)\w*/i,
+    match: /\b(contact|email|reach|dm|message|linkedin|github|repo)\w*/i,
     answer:
-      "Shelfsight — a vision model for retail shelf audits, PyTorch to ONNX to edge devices, 94% accuracy. Fridge Vision was the unserious version: photo of your fridge, three dinner ideas. It mostly suggested toast.",
+      "github.com/psood708 has everything, and linkedin.com/in/parth-sood is the other route. The contact page has a form that reaches the same inbox.",
+  },
+  {
+    match: /\b(lab|experiment|side.?project|weekend|smaller|fun)\w*/i,
+    answer:
+      "The lab holds the smaller builds: a facility compliance checker that tells you which regulatory frameworks a design meets, an expense tracker I actually use, a cointegration-based pairs trading study, and an AWS application from the MoMacMo internship.",
+  },
+  {
+    match: /\b(who|about|background|yourself|experience|career|year|study|degree)\w*/i,
+    answer:
+      "Data Science Analyst at Aspect Ratio since 2025 — patient cohort pipelines, BioBERT over clinical notes, physician referral networks. Before that: ML research intern at ISRO's Space Applications Centre moving 10TB+ of telemetry through PySpark, and a software engineering internship at MoMacMo doing seismic ML on AWS. B.Tech in Computer Engineering from PDEU, CGPA 9.41. The About page has the longer version.",
   },
 ];
 
 const FALLBACK =
-  "Not in my context window yet. Try asking about RAG, evals, agents, latency, the stack, or whether I’m hiring-adjacent — or just email parth@yourdomain.dev and ask a human.";
+  "Not in my context window yet. Try asking about retrieval, Rust, evals, agents, cost, latency or the stack — or head to github.com/psood708 and read the source.";
 
 export const SUGGESTIONS = [
   "What have you shipped?",
   "How do you think about evals?",
-  "Are you available for work?",
+  "Why write a vector DB in Rust?",
 ] as const;
 
 export function answerFor(question: string): string {

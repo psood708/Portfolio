@@ -7,7 +7,7 @@ import { STACK, TIMELINE } from "@/lib/content";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Part engineer, part prompt whisperer, full-time tinkerer. Evals, latency budgets and the unglamorous plumbing that makes AI trustworthy.",
+    "Data Science Analyst building applied AI in healthcare — clinical NLP, cohort pipelines, retrieval infrastructure. Previously ISRO and MoMacMo.",
 };
 
 export default function AboutPage() {
@@ -24,9 +24,16 @@ export default function AboutPage() {
             full-time tinkerer.
           </h1>
           <p className="m-0 max-w-[640px] text-[17px] leading-[1.55] text-mute-1 md:text-[19px]">
-            I sit between research and product: taking what models can do this month
-            and turning it into features people rely on. I care about evals, latency
-            budgets and the unglamorous plumbing that makes AI trustworthy.
+            I build applied AI in healthcare — ML pipelines that pull patient cohorts
+            out of high-dimensional clinical data, and bio-NLP that reads what the
+            structured tables miss: BioBERT over EHR notes, PubMedBERT over
+            publications, UMAP and BERTopic to surface prescribing patterns and
+            physician referral networks. Before that I moved 10TB+ of mission
+            telemetry through PySpark at ISRO’s Space Applications Centre. Off the
+            clock I write the layer underneath — a vector index from scratch in Rust,
+            a three-tier memory system, agents that earn their evals. I care about
+            evals, latency budgets and the unglamorous plumbing that makes AI
+            trustworthy.
           </p>
           <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
             {STACK.map((s) => (

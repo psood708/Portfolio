@@ -15,7 +15,7 @@ export default function LabGrid() {
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4">
       {LAB.map((l, i) => (
-        <motion.article
+        <motion.a
           key={l.name}
           initial={{ opacity: 0, y: 36, rotate: l.rot }}
           whileInView={{ opacity: 1, y: 0, rotate: 0 }}
@@ -26,7 +26,10 @@ export default function LabGrid() {
             ease: [0.22, 1, 0.36, 1],
           }}
           whileHover={{ rotate: -1.2, y: -6 }}
-          data-cursor="play ▶"
+          href={l.href}
+          target="_blank"
+          rel="noreferrer"
+          data-cursor="open ↗"
           className="flex flex-col gap-4 rounded-[20px] border border-line bg-surface p-5 transition-colors duration-300 hover:border-violet"
         >
           <div className="flex items-center justify-between">
@@ -50,7 +53,7 @@ export default function LabGrid() {
             <h2 className="m-0 text-2xl font-semibold tracking-[-0.02em]">{l.name}</h2>
             <p className="m-0 mt-1 text-[15px] leading-[1.4] text-mute-1">{l.line}</p>
           </div>
-        </motion.article>
+        </motion.a>
       ))}
     </div>
   );

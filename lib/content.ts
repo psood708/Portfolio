@@ -1,14 +1,14 @@
 /**
  * Every string and number here comes straight out of the `renderVals()` block in
- * `Parth Portfolio.dc.html`. Swap the placeholders (Company One, yourdomain.dev)
- * for real values and the whole site follows.
+ * `Parth Portfolio.dc.html`; the projects, lab entries and career history are
+ * Parth's own, from github.com/psood708 and his resume.
  */
 
 export const SITE = {
   name: "Parth Sood",
   role: "applied_ai_engineer",
-  email: "parth@yourdomain.dev",
-  handle: "@parthsood",
+  email: "parthsood45@gmail.com",
+  handle: "@psood708",
   footerNote: "made with Next.js, not by an LLM (mostly)",
 } as const;
 
@@ -28,19 +28,19 @@ export const HEADLINE_WORDS = [
 export const BIO_REGISTERS: { max: number; text: string }[] = [
   {
     max: 0.4,
-    text: "Parth Sood. Applied AI Engineer. Builds agents, retrieval systems and evaluations for production use.",
+    text: "Parth Sood. Data Science Analyst at Aspect Ratio. Builds ML pipelines, clinical NLP systems and retrieval infrastructure.",
   },
   {
     max: 1.2,
-    text: "Hi, I’m Parth — I ship agents, RAG systems and evals that survive contact with actual users. Less demo, more prod.",
+    text: "Hi, I’m Parth — I build applied AI for healthcare: cohort pipelines, BioBERT over clinical notes, and a vector index I wrote from scratch in Rust.",
   },
   {
     max: 1.7,
-    text: "Hey!! Parth here — I wrangle LLMs into products, argue with vector databases and occasionally win. Wanna build?",
+    text: "Hey!! Parth here — I wrangle clinical NLP into something useful, argue with vector indexes I built myself, and occasionally win. Wanna build?",
   },
   {
     max: Infinity,
-    text: "parth.exe → agents?? yes. evals!! always. vibes: immaculate. tokens: spicy. is this a bio or a poem? ship it 🚀",
+    text: "parth.exe → BioBERT?? yes. 10TB of telemetry!! survived. vibes: immaculate. tokens: spicy. is this a bio or a poem? ship it 🚀",
   },
 ];
 
@@ -60,16 +60,16 @@ export const MARQUEE = [
   "Agents",
   "RAG",
   "Evals",
-  "Fine-tuning",
-  "Tool use",
-  "Voice",
-  "Vision",
+  "Clinical NLP",
+  "Vector search",
+  "PySpark",
+  "Rust",
   "Python",
   "TypeScript",
 ] as const;
 
-export type Tag = "Agents" | "RAG" | "Evals" | "Multimodal";
-export const FILTERS = ["All", "Agents", "RAG", "Evals", "Multimodal"] as const;
+export type Tag = "Agents" | "RAG" | "Evals" | "Systems";
+export const FILTERS = ["All", "Agents", "RAG", "Evals", "Systems"] as const;
 export type Filter = (typeof FILTERS)[number];
 
 export type Project = {
@@ -82,81 +82,88 @@ export type Project = {
   metricLabel: string;
   year: string;
   shot: string;
+  href: string;
   tags: Tag[];
 };
 
 export const PROJECTS: Project[] = [
   {
     num: "01",
-    slug: "docpilot",
-    name: "DocPilot",
-    line: "RAG copilot over 40k internal docs",
-    stack: "Python · pgvector · LangGraph",
-    metric: "−62%",
-    metricLabel: "support tickets",
+    slug: "memoryweave",
+    name: "MemoryWeave",
+    line: "Conversational AI with three-tier memory: episodic recall, knowledge graph, working context",
+    stack: "FastAPI · LangGraph · PostgreSQL · Next.js",
+    metric: "−38%",
+    metricLabel: "context tokens",
     year: "2026",
-    shot: "chat UI screenshot",
-    tags: ["RAG", "Agents"],
+    shot: "architecture diagram",
+    href: "https://github.com/psood708/memory-weave",
+    tags: ["Agents", "RAG", "Evals"],
   },
   {
     num: "02",
-    slug: "evalbench",
-    name: "Evalbench",
-    line: "Regression evals for LLM features",
-    stack: "TS · LLM-as-judge · CI",
-    metric: "3×",
-    metricLabel: "faster releases",
-    year: "2025",
-    shot: "eval dashboard",
-    tags: ["Evals"],
+    slug: "hnsw-vector-db",
+    name: "HNSW Vector DB",
+    line: "Vector database written from scratch in Rust — hand-rolled HNSW index, mmap persistence, parallel search",
+    stack: "Rust · Axum · Rayon · mmap",
+    metric: "98%",
+    metricLabel: "recall @ 1M vectors",
+    year: "2026",
+    shot: "recall / latency plot",
+    href: "https://github.com/psood708/HNSW_Vector_DB",
+    tags: ["RAG", "Systems"],
   },
   {
     num: "03",
-    slug: "murmur",
-    name: "Murmur",
-    line: "Realtime voice agent for bookings",
-    stack: "WebRTC · STT/TTS · tools",
-    metric: "480ms",
-    metricLabel: "p50 latency",
-    year: "2025",
-    shot: "voice flow demo",
-    tags: ["Agents", "Multimodal"],
+    slug: "terra-intelligence-engine",
+    name: "Terra Intelligence Engine",
+    line: "Health intelligence layer over unified wearable, CGM and sleep sensor infrastructure",
+    stack: "Python 3.12 · FastAPI · Pydantic v2 · Next.js",
+    metric: "50/50",
+    metricLabel: "tests, under 2s",
+    year: "2026",
+    shot: "insights dashboard",
+    href: "https://terra-ai-one.vercel.app",
+    tags: ["Systems", "Evals"],
   },
   {
     num: "04",
-    slug: "shelfsight",
-    name: "Shelfsight",
-    line: "Vision model for retail shelf audits",
-    stack: "PyTorch · ONNX · edge",
-    metric: "94%",
-    metricLabel: "accuracy",
-    year: "2024",
-    shot: "detection overlay",
-    tags: ["Multimodal"],
+    slug: "clinical-intelligence-agent",
+    name: "Clinical Intelligence Agent",
+    line: "Four-agent pipeline that extracts, retrieves, verifies and synthesises structured insight from clinical notes",
+    stack: "Python · LangGraph · MCP · Ollama / Groq",
+    metric: "$0",
+    metricLabel: "inference cost",
+    year: "2026",
+    shot: "agent pipeline",
+    href: "https://github.com/psood708/Clinical-Intelligence-Agent",
+    tags: ["Agents", "RAG", "Evals"],
   },
   {
     num: "05",
-    slug: "tidy",
-    name: "Tidy",
-    line: "Agent that triages a messy inbox",
-    stack: "Function calling · Gmail API",
-    metric: "2h/wk",
-    metricLabel: "saved",
-    year: "2024",
-    shot: "inbox UI",
-    tags: ["Agents"],
+    slug: "agentreadiness",
+    name: "AgentReadiness",
+    line: "Scores any site for how well AI agents can read it, and drafts its /llms.txt",
+    stack: "TypeScript · Next.js · Vercel",
+    metric: "8",
+    metricLabel: "automated checks",
+    year: "2026",
+    shot: "score report",
+    href: "https://agent-sites-five.vercel.app",
+    tags: ["Agents", "Systems"],
   },
   {
     num: "06",
-    slug: "finetune-lite",
-    name: "Finetune-lite",
-    line: "LoRA pipeline for domain models",
-    stack: "HF · LoRA · Modal",
-    metric: "−70%",
-    metricLabel: "cost",
-    year: "2023",
-    shot: "training curves",
-    tags: ["Evals"],
+    slug: "ollive",
+    name: "Ollive",
+    line: "Two assistants with identical capabilities — open-weights vs frontier — run head to head",
+    stack: "Qwen2.5 · Gemini Flash · Langfuse · Tavily",
+    metric: "45",
+    metricLabel: "prompt eval battery",
+    year: "2026",
+    shot: "eval comparison",
+    href: "https://github.com/psood708/ollive_assignment",
+    tags: ["Agents", "Evals"],
   },
 ];
 
@@ -170,69 +177,60 @@ export type LabEntry = {
   date: string;
   shot: string;
   rot: number;
+  href: string;
 };
 
 export const LAB: LabEntry[] = [
   {
-    name: "Haiku Linter",
-    line: "Rejects PRs whose commit messages aren’t haikus.",
+    name: "Facility Compliance",
+    line: "Enter a facility's design spec, get back which regulatory frameworks it meets and what to change.",
     status: "shipped",
-    date: "Aug 2026",
-    shot: "gif",
+    date: "Sep 2026",
+    shot: "compliance result",
     rot: -2,
+    href: "https://facility-planning.vercel.app",
   },
   {
-    name: "Agent Arena",
-    line: "Two agents negotiate the price of a used couch.",
-    status: "cooking",
-    date: "Jul 2026",
-    shot: "video loop",
+    name: "FinFun",
+    line: "Personal expense tracker. The one I actually use to find out where the money went.",
+    status: "shipped",
+    date: "Oct 2024",
+    shot: "spend breakdown",
     rot: 1.5,
+    href: "https://github.com/psood708/FinFun",
   },
   {
-    name: "Prompt Golf",
-    line: "Shortest prompt that gets the right answer wins.",
-    status: "shipped",
-    date: "May 2026",
-    shot: "game screen",
-    rot: -1,
-  },
-  {
-    name: "Fridge Vision",
-    line: "Photo of fridge → three dinner ideas.",
-    status: "broke it",
-    date: "Mar 2026",
-    shot: "phone demo",
-    rot: 2,
-  },
-  {
-    name: "Tiny Tokens",
-    line: "Visualise how a model tokenizes your name.",
-    status: "shipped",
-    date: "Jan 2026",
-    shot: "token viz",
-    rot: -1.5,
-  },
-  {
-    name: "Rubber Duck 2",
-    line: "A debugging duck that asks annoying questions.",
+    name: "Pairs Trading",
+    line: "Cointegration-based statistical arbitrage, worked through in notebooks.",
     status: "cooking",
-    date: "Dec 2025",
-    shot: "duck photo",
-    rot: 1,
+    date: "Oct 2023",
+    shot: "spread chart",
+    rot: -1,
+    href: "https://github.com/psood708/Pairs_Trading_Project",
+  },
+  {
+    name: "MoMacMo",
+    line: "AWS application built and deployed during the MoMacMo internship.",
+    status: "shipped",
+    date: "Dec 2023",
+    shot: "pipeline run",
+    rot: 2,
+    href: "https://github.com/psood708/MoMacMo",
   },
 ];
 
 export const STACK = [
   "Python",
   "TypeScript",
+  "Rust",
+  "PySpark",
   "PyTorch",
+  "BioBERT",
   "LangGraph",
-  "pgvector",
   "FastAPI",
   "Next.js",
-  "Modal",
-  "Weights & Biases",
+  "PostgreSQL",
+  "AWS",
   "Docker",
 ] as const;
 
@@ -258,17 +256,32 @@ export const PRINCIPLES = [
 ] as const;
 
 export const TIMELINE = [
-  { when: "2024 — now", where: "Company One", what: "Applied AI Engineer · agents & evals" },
-  { when: "2022 — 24", where: "Company Two", what: "ML Engineer · search & retrieval" },
-  { when: "2021 — 22", where: "Company Three", what: "Software Engineer · data platform" },
-  { when: "2017 — 21", where: "University", what: "B.Tech, Computer Science" },
+  {
+    when: "2025 — now",
+    where: "Aspect Ratio",
+    what: "Data Science Analyst · patient cohort pipelines, clinical NLP, physician referral networks",
+  },
+  {
+    when: "2024",
+    where: "ISRO · Space Applications Centre",
+    what: "ML Research Intern · 10TB+ telemetry on PySpark, Kalman-filter anomaly detection",
+  },
+  {
+    when: "2023 — 24",
+    where: "MoMacMo",
+    what: "Software Engineer Intern · seismic ML and RESTful APIs on AWS",
+  },
+  {
+    when: "2021 — 25",
+    where: "PDEU",
+    what: "B.Tech, Computer Engineering · CGPA 9.41/10",
+  },
 ] as const;
 
 export const LINKS = [
-  { name: "Email", handle: "parth@yourdomain.dev", href: "mailto:parth@yourdomain.dev" },
-  { name: "GitHub", handle: "@parthsood", href: "https://github.com/parthsood" },
-  { name: "LinkedIn", handle: "/in/parthsood", href: "https://linkedin.com/in/parthsood" },
-  { name: "Hugging Face", handle: "@parthsood", href: "https://huggingface.co/parthsood" },
+  { name: "Email", handle: SITE.email, href: `mailto:${SITE.email}` },
+  { name: "GitHub", handle: "@psood708", href: "https://github.com/psood708" },
+  { name: "LinkedIn", handle: "/in/parth-sood", href: "https://www.linkedin.com/in/parth-sood/" },
 ] as const;
 
 export const INTERESTS = [

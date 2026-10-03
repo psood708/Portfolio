@@ -29,24 +29,23 @@ export default function Footer() {
               {SITE.email}
             </Link>
             <span className="text-sm text-mute-2 md:text-base">
-              <Link href="https://github.com/parthsood" className="hover:text-bone">
+              <Link
+                href="https://github.com/psood708"
+                className="hover:text-bone"
+                target="_blank"
+                rel="noreferrer"
+              >
                 GitHub
               </Link>{" "}
               ·{" "}
-              <Link href="https://linkedin.com/in/parthsood" className="hover:text-bone">
+              <Link
+                href="https://www.linkedin.com/in/parth-sood/"
+                className="hover:text-bone"
+                target="_blank"
+                rel="noreferrer"
+              >
                 LinkedIn
-              </Link>{" "}
-              ·{" "}
-              <Link href="https://x.com/parthsood" className="hover:text-bone">
-                X
               </Link>
-              <span className="hidden md:inline">
-                {" "}
-                ·{" "}
-                <Link href="https://huggingface.co/parthsood" className="hover:text-bone">
-                  Hugging Face
-                </Link>
-              </span>
             </span>
           </div>
         </Reveal>

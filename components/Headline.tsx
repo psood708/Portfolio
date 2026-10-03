@@ -14,8 +14,40 @@ import { tokenChild, tokenStream } from "@/lib/motion";
  * discovered first. A manual click restarts the clock, so tapping never lands
  * right before an automatic flip. Anyone who prefers reduced motion gets the
  * click-only behaviour the design specified.
+ *
+ * Reflow: the variants are different lengths — "less dumb stuff" takes a line
+ * that "the math" does not — so swapping them would shunt the whole page down.
+ * Every variant is therefore also rendered as an invisible sizer in the same
+ * grid cell, making the block as tall as its tallest state at any width. The
+ * sizers reuse the exact markup of the live headline (same inline-block spans,
+ * same non-breaking spaces), because plain text wraps at different points than
+ * a row of inline-blocks and would reserve the wrong height.
  */
 const REROLL_MS = 2000;
+
+const TYPE =
+  "m-0 text-hero font-extrabold leading-[0.88] tracking-[-0.05em] md:leading-[0.86]";
+const WORD =
+  "inline-block select-none text-left align-top text-lime underline decoration-dashed decoration-4 underline-offset-[6px] md:decoration-[6px] md:underline-offset-[10px]";
+
+/** The fixed part of the headline, identical in the live copy and the sizers. */
+function Prefix({ animated }: { animated: boolean }) {
+  const Span = animated ? motion.span : "span";
+  const v = animated ? { variants: tokenChild } : {};
+  return (
+    <>
+      {["I", "make", "LLMs"].map((t) => (
+        <Span key={t} {...v} className="inline-block">
+          {t}&nbsp;
+        </Span>
+      ))}
+      <br className="hidden md:block" />
+      <Span {...v} className="inline-block">
+        do&nbsp;
+      </Span>
+    </>
+  );
+}
 
 export default function Headline() {
   const [i, setI] = useState(0);
@@ -44,45 +76,47 @@ export default function Headline() {
   }, [auto, advance, i]);
 
   return (
-    <motion.h1
-      initial="hidden"
-      animate="shown"
-      variants={tokenStream}
-      className="m-0 text-hero font-extrabold leading-[0.88] tracking-[-0.05em] md:leading-[0.86]"
-    >
-      {["I", "make", "LLMs"].map((t) => (
-        <motion.span key={t} variants={tokenChild} className="inline-block">
-          {t}&nbsp;
-        </motion.span>
+    <div className="grid">
+      {HEADLINE_WORDS.map((w) => (
+        <div key={w} aria-hidden className={`${TYPE} invisible [grid-area:1/1]`}>
+          <Prefix animated={false} />
+          <span className={WORD}>{w}</span>
+          <span className="inline-block text-violet">.</span>
+        </div>
       ))}
-      <br className="hidden md:block" />
-      <motion.span variants={tokenChild} className="inline-block">
-        do&nbsp;
-      </motion.span>
 
-      <motion.span variants={tokenChild} className="inline-block">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.button
-            key={word}
-            type="button"
-            onClick={advance}
-            data-cursor="reroll ↻"
-            aria-label={`Reroll headline word, currently “${word}”`}
-            initial={{ opacity: 0, y: "0.18em", filter: "blur(5px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: "-0.18em", filter: "blur(5px)" }}
-            transition={{ duration: 0.28 }}
-            className="inline-block select-none text-left align-top text-lime underline decoration-dashed decoration-4 underline-offset-[6px] transition-colors hover:text-violet md:decoration-[6px] md:underline-offset-[10px]"
-            style={{ textDecorationColor: "oklch(0.86 0.17 125 / 0.35)" }}
-          >
-            {word}
-          </motion.button>
-        </AnimatePresence>
-      </motion.span>
+      <motion.h1
+        initial="hidden"
+        animate="shown"
+        variants={tokenStream}
+        className={`${TYPE} [grid-area:1/1]`}
+      >
+        <Prefix animated />
 
-      <motion.span variants={tokenChild} className="inline-block text-violet">
-        .
-      </motion.span>
-    </motion.h1>
+        <motion.span variants={tokenChild} className="inline-block">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.button
+              key={word}
+              type="button"
+              onClick={advance}
+              data-cursor="reroll ↻"
+              aria-label={`Reroll headline word, currently “${word}”`}
+              initial={{ opacity: 0, y: "0.18em", filter: "blur(5px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: "-0.18em", filter: "blur(5px)" }}
+              transition={{ duration: 0.28 }}
+              className={`${WORD} transition-colors hover:text-violet`}
+              style={{ textDecorationColor: "oklch(0.86 0.17 125 / 0.35)" }}
+            >
+              {word}
+            </motion.button>
+          </AnimatePresence>
+        </motion.span>
+
+        <motion.span variants={tokenChild} className="inline-block text-violet">
+          .
+        </motion.span>
+      </motion.h1>
+    </div>
   );
 }

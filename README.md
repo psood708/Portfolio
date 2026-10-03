@@ -40,14 +40,28 @@ is ported state-for-state from its `renderVals()` block.
 
 ## Where the content lives
 
-`lib/content.ts` holds every string from the design. Replace these placeholders:
+`lib/content.ts` holds every string. It is real content, not placeholders:
+`PROJECTS` and `LAB` come from github.com/psood708 with copy and metrics taken
+from each repo's own README; `TIMELINE`, `STACK` and the About prose come from
+Parth's resume.
 
-- `SITE.email` — `parth@yourdomain.dev`
-- `TIMELINE` — `Company One` / `Two` / `Three`
-- `LINKS` — social URLs
-- `PROJECTS` / `LAB` — project copy and metrics
-- `Hatch` components render a labelled diagonal hatch wherever a screenshot
-  belongs. Swap each for `next/image` as real assets arrive.
+The one thing still standing in: `Hatch` renders a labelled diagonal hatch
+wherever a screenshot belongs, naming the shot it wants. Swap each for
+`next/image` as real assets arrive.
+
+## Two details worth knowing
+
+**The headline reserves its tallest state.** The five reroll variants are
+different lengths, so swapping them would shunt the page down by up to 134px.
+`Headline.tsx` renders every variant as an invisible sizer in the same grid
+cell, which makes the block as tall as its worst case at any viewport width.
+The sizers reuse the live markup exactly — plain text wraps at different points
+than a row of inline-blocks.
+
+**The intro plays once per tab.** `LoadingScreen.tsx` runs three shots from
+deep (~2.9s) and records a `sessionStorage` flag, so navigating back to the
+home page is not a wait. Reduced-motion viewers get a still frame that clears
+in 450ms.
 
 ## Two things that are not wired to a backend
 

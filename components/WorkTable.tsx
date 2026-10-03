@@ -86,7 +86,9 @@ export default function WorkTable() {
             <motion.a
               key={p.slug}
               id={p.slug}
-              href={`#${p.slug}`}
+              href={p.href}
+              target="_blank"
+              rel="noreferrer"
               layout
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}

@@ -22,7 +22,9 @@ export default function FeaturedGrid() {
       {FEATURED.map((p) => (
         <motion.div key={p.slug} variants={revealVariants}>
           <Link
-            href={`/work#${p.slug}`}
+            href={p.href}
+            target="_blank"
+            rel="noreferrer"
             data-cursor="open ↗"
             className="group flex h-full flex-col overflow-hidden rounded-[18px] border border-line bg-surface transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:border-lime md:rounded-[20px]"
           >
