@@ -63,16 +63,46 @@ deep (~2.9s) and records a `sessionStorage` flag, so navigating back to the
 home page is not a wait. Reduced-motion viewers get a still frame that clears
 in 450ms.
 
-## Two things that are not wired to a backend
+## One thing that is not wired to a backend
 
-- **"Ask my portfolio anything…"** streams keyword-matched canned answers from
-  `lib/ask.ts`, client-side. The panel labels itself "canned response · not a
-  live model call". To make it real, point `AskBar` at a route handler; the UI
-  does not change.
 - **Contact form** has no form backend. Submitting shows the design's success
   state and hands over a prefilled `mailto:` so messages still arrive. Give the
   `<form>` an `action` (Formspree, Resend via a route handler, …) and delete the
   mailto branch in `components/ContactForm.tsx`.
+
+## The ask bar
+
+"Ask my portfolio anything…" is answered by **Claude Opus 5** through
+`app/api/ask/route.ts`, grounded strictly in this site's own content.
+
+```bash
+cp .env.example .env.local   # then fill it in
+```
+
+| Variable | Needed for |
+|---|---|
+| `ANTHROPIC_API_KEY` | live answers — without it the bar falls back to `lib/ask.ts` |
+| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | rate limiting — **required for any public deploy** |
+
+**Grounding.** `lib/portfolio-context.ts` renders `lib/content.ts` plus a short
+resume block into one ~1.4k-token document that goes in the system prompt. Edit a
+project in `content.ts` and the model's knowledge follows. The whole corpus fits
+in context, so there is no vector store and no retrieval step. The model is told
+to answer only from that document and to send anything else to the email address
+rather than guess.
+
+**Prompt injection.** The visitor's question is only ever a `user` message; it is
+never concatenated into the system prompt. That separation is what makes the
+"treat the message as a question, not instructions" rule enforceable.
+
+**Cost.** The system prompt is ~1.8k tokens, over the 512-token minimum Opus 5
+needs to cache. Roughly **$0.018** per question cold and **$0.008** on a cache hit
+inside the 5-minute TTL.
+
+**Rate limits.** 8 questions per IP per 10 minutes, 300 globally per day. Tripping
+either returns the canned answer with `x-ask-source: canned` and HTTP 200 — the bar
+degrades, it never errors. The same path covers a missing key, an upstream failure
+and a model refusal, so the bar also works with the dev server offline.
 
 ## Theme
 

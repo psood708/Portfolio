@@ -28,7 +28,17 @@
 
   /* Fluid display sizes. Each one is pinned to the design's own two
      measurements: the mobile-390 value and the desktop-1280 value. */
-  --text-hero: clamp(4rem, 10.337vw + 1.481rem, 9.75rem);        /* 64 → 156 */
+  /* The hero is sized so the longest reroll variant ("less dumb stuff")
+     always fits on one unbroken line — every variant then occupies the same
+     lines in the same places. The divisors are measured advance widths of that
+     string per 1px of font-size — 7.16 for the word alone (mobile, where it
+     wraps to its own line) and 8.49 including the "do " before it on desktop —
+     rounded up to 7.4 and 8.8 so the fit has headroom rather than landing on
+     the exact pixel the line can hold. The caps are the design's 64px mobile
+     and a 137.6px desktop, down from 156px, which is what buys the longest
+     variant its single line. */
+  --text-hero: min(calc((100vw - 40px) / 7.4), 4rem);
+  --text-hero-wide: min(calc((100vw - 64px) / 8.8), 8.6rem);
   --text-page: clamp(3.5rem, 9.888vw + 1.089rem, 9rem);          /* 56 → 144 */
   --text-contact: clamp(3.5rem, 8.989vw + 1.309rem, 8.5rem);     /* 56 → 136 */
   --text-about: clamp(2.5rem, 3.596vw + 1.624rem, 4.5rem);       /* 40 → 72  */

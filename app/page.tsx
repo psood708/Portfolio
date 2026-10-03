@@ -6,7 +6,6 @@ import LabPanel from "@/components/LabPanel";
 import Marquee from "@/components/Marquee";
 import ModelToys from "@/components/ModelToys";
 import Reveal from "@/components/Reveal";
-import SectionNote from "@/components/SectionNote";
 import TempSlider from "@/components/TempSlider";
 import { SITE } from "@/lib/content";
 
@@ -21,12 +20,6 @@ export default function Home() {
         </p>
 
         <Headline />
-
-        <div className="mt-8 hidden md:block">
-          <SectionNote>
-            The green word rerolls every 2s — five variants. Click to skip ahead.
-          </SectionNote>
-        </div>
 
         <div className="mt-8 grid grid-cols-1 items-end gap-8 md:mt-12 md:grid-cols-[minmax(0,1fr)_520px] md:gap-12">
           <TempSlider />

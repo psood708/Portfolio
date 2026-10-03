@@ -1,8 +1,14 @@
 /**
- * The "Ask my portfolio anything…" bar. Deliberately not a model call — these
- * are canned answers matched on keywords, streamed client-side so the bar feels
- * alive without a key, a server route or a bill. Swap `answerFor` for a fetch to
- * a real route later and the UI does not change.
+ * The fallback corpus for the "Ask my portfolio anything…" bar.
+ *
+ * `app/api/ask/route.ts` answers with Claude now; this is what answers when it
+ * cannot — no `ANTHROPIC_API_KEY`, a tripped rate limit, an upstream error, or a
+ * refusal. Keyword-matched and deliberately narrow, but it means the bar always
+ * says something true rather than showing an error, and it keeps working with
+ * the dev server offline.
+ *
+ * When these answer, the panel labels itself "canned response". Keep them in
+ * step with `lib/content.ts` so the two corpora never contradict each other.
  */
 
 type Canned = { match: RegExp; answer: string };

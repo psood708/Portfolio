@@ -15,39 +15,21 @@ import { tokenChild, tokenStream } from "@/lib/motion";
  * right before an automatic flip. Anyone who prefers reduced motion gets the
  * click-only behaviour the design specified.
  *
- * Reflow: the variants are different lengths — "less dumb stuff" takes a line
- * that "the math" does not — so swapping them would shunt the whole page down.
- * Every variant is therefore also rendered as an invisible sizer in the same
- * grid cell, making the block as tall as its tallest state at any width. The
- * sizers reuse the exact markup of the live headline (same inline-block spans,
- * same non-breaking spaces), because plain text wraps at different points than
- * a row of inline-blocks and would reserve the wrong height.
+ * Holding the layout still — the variants are different lengths, and swapping
+ * them used to re-wrap the headline and shunt the page down by up to 134px.
+ * Two things stop that now:
+ *
+ *   1. The word sits in an inline-grid slot where all five variants (plus the
+ *      trailing full stop) are stacked in one cell. The slot is therefore
+ *      always as wide as the widest variant, and `whitespace-nowrap` keeps each
+ *      one on a single line, so the surrounding text wraps identically no
+ *      matter which word is showing.
+ *   2. `--text-hero` in globals.css is derived from that widest variant's
+ *      measured width, so the slot always fits the line it is on.
+ *
+ * The net effect: same lines, same positions, same height, every reroll.
  */
 const REROLL_MS = 2000;
-
-const TYPE =
-  "m-0 text-hero font-extrabold leading-[0.88] tracking-[-0.05em] md:leading-[0.86]";
-const WORD =
-  "inline-block select-none text-left align-top text-lime underline decoration-dashed decoration-4 underline-offset-[6px] md:decoration-[6px] md:underline-offset-[10px]";
-
-/** The fixed part of the headline, identical in the live copy and the sizers. */
-function Prefix({ animated }: { animated: boolean }) {
-  const Span = animated ? motion.span : "span";
-  const v = animated ? { variants: tokenChild } : {};
-  return (
-    <>
-      {["I", "make", "LLMs"].map((t) => (
-        <Span key={t} {...v} className="inline-block">
-          {t}&nbsp;
-        </Span>
-      ))}
-      <br className="hidden md:block" />
-      <Span {...v} className="inline-block">
-        do&nbsp;
-      </Span>
-    </>
-  );
-}
 
 export default function Headline() {
   const [i, setI] = useState(0);
@@ -76,24 +58,34 @@ export default function Headline() {
   }, [auto, advance, i]);
 
   return (
-    <div className="grid">
-      {HEADLINE_WORDS.map((w) => (
-        <div key={w} aria-hidden className={`${TYPE} invisible [grid-area:1/1]`}>
-          <Prefix animated={false} />
-          <span className={WORD}>{w}</span>
-          <span className="inline-block text-violet">.</span>
-        </div>
+    <motion.h1
+      initial="hidden"
+      animate="shown"
+      variants={tokenStream}
+      className="m-0 text-hero font-extrabold leading-[0.88] tracking-[-0.05em] md:text-hero-wide md:leading-[0.86]"
+    >
+      {["I", "make", "LLMs"].map((t) => (
+        <motion.span key={t} variants={tokenChild} className="inline-block">
+          {t}&nbsp;
+        </motion.span>
       ))}
+      <br className="hidden md:block" />
+      <motion.span variants={tokenChild} className="inline-block">
+        do&nbsp;
+      </motion.span>
 
-      <motion.h1
-        initial="hidden"
-        animate="shown"
-        variants={tokenStream}
-        className={`${TYPE} [grid-area:1/1]`}
+      {/* Fixed-width, unbreakable slot — see the note above. */}
+      <motion.span
+        variants={tokenChild}
+        className="inline-grid justify-items-start whitespace-nowrap"
       >
-        <Prefix animated />
+        {HEADLINE_WORDS.map((w) => (
+          <span key={w} aria-hidden className="invisible [grid-area:1/1]">
+            {w}.
+          </span>
+        ))}
 
-        <motion.span variants={tokenChild} className="inline-block">
+        <span className="[grid-area:1/1]">
           <AnimatePresence mode="wait" initial={false}>
             <motion.button
               key={word}
@@ -105,18 +97,15 @@ export default function Headline() {
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               exit={{ opacity: 0, y: "-0.18em", filter: "blur(5px)" }}
               transition={{ duration: 0.28 }}
-              className={`${WORD} transition-colors hover:text-violet`}
+              className="inline-block select-none text-lime underline decoration-dashed decoration-4 underline-offset-[6px] transition-colors hover:text-violet md:decoration-[6px] md:underline-offset-[10px]"
               style={{ textDecorationColor: "oklch(0.86 0.17 125 / 0.35)" }}
             >
               {word}
             </motion.button>
           </AnimatePresence>
-        </motion.span>
-
-        <motion.span variants={tokenChild} className="inline-block text-violet">
-          .
-        </motion.span>
-      </motion.h1>
-    </div>
+          <span className="text-violet">.</span>
+        </span>
+      </motion.span>
+    </motion.h1>
   );
 }
