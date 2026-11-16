@@ -3,24 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Port of the follow-cursor from `componentDidMount()` in the design doc.
- *
- * Two layers: a 6px lime dot pinned exactly to the pointer, and a lagging ring
- * that eases toward it at 0.18/frame. The ring stretches along its velocity
- * vector and rotates to face it; when the pointer is over anything carrying
- * `data-cursor`, it stops rotating, fills lime and shows that label instead.
- *
- * In the design the cursor only lit up inside `.dv-card` (the canvas frame).
- * Here the whole document is the frame, so it is always live — except on touch
- * and for anyone who asked for reduced motion.
+ * The crystal cursor. Two layers: a 4px dot pinned to the pointer and a ring
+ * that eases toward it at 0.18/frame, stretching along its velocity. Over
+ * anything carrying `data-cursor` the ring becomes a hazmat pill showing that
+ * label; over `data-cursor-invert` (images, plates) it grows and inverts.
+ * Fine pointers only, and never for anyone who asked for reduced motion.
  */
-export default function NeuralCursor() {
+export default function Cursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const [label, setLabel] = useState("");
+  const [invert, setInvert] = useState(false);
   const [enabled, setEnabled] = useState(false);
 
-  // Gate on a fine pointer so phones and tablets keep their native behaviour.
   useEffect(() => {
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
     const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -36,8 +31,8 @@ export default function NeuralCursor() {
 
   useEffect(() => {
     if (!enabled) return;
-    document.documentElement.classList.add("has-neural-cursor");
-    return () => document.documentElement.classList.remove("has-neural-cursor");
+    document.documentElement.classList.add("has-cursor");
+    return () => document.documentElement.classList.remove("has-cursor");
   }, [enabled]);
 
   useEffect(() => {
@@ -53,6 +48,7 @@ export default function NeuralCursor() {
     let down = false;
     let visible = false;
     let current = "";
+    let inverted = false;
     let raf = 0;
 
     const move = (e: PointerEvent) => {
@@ -72,6 +68,11 @@ export default function NeuralCursor() {
         current = next;
         setLabel(next);
       }
+      const inv = !!target?.closest?.("[data-cursor-invert]");
+      if (inv !== inverted) {
+        inverted = inv;
+        setInvert(inv);
+      }
     };
 
     const leave = () => {
@@ -90,17 +91,16 @@ export default function NeuralCursor() {
       const h = ring.offsetHeight;
       const vx = mx - rx;
       const vy = my - ry;
-      // Speed-driven squash, capped so fast flicks stay readable.
       const speed = Math.min(Math.hypot(vx, vy) / 300, 0.25);
       const angle = (Math.atan2(vy, vx) * 180) / Math.PI;
       const press = down ? 0.8 : 1;
-      const labelled = current !== "";
-      const sx = press * (1 + (labelled ? 0 : speed));
-      const sy = press * (1 - (labelled ? 0 : speed * 0.6));
+      const still = current !== "" || inverted;
+      const sx = press * (1 + (still ? 0 : speed));
+      const sy = press * (1 - (still ? 0 : speed * 0.6));
 
       ring.style.transform =
         `translate3d(${rx - w / 2}px, ${ry - h / 2}px, 0) ` +
-        `rotate(${labelled ? 0 : angle}deg) scale(${sx}, ${sy})`;
+        `rotate(${still ? 0 : angle}deg) scale(${sx}, ${sy})`;
 
       raf = requestAnimationFrame(tick);
     };
@@ -136,20 +136,31 @@ export default function NeuralCursor() {
       <div
         ref={dotRef}
         aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[9999] -ml-[3px] -mt-[3px] h-[6px] w-[6px] rounded-full opacity-0 transition-opacity duration-200"
-        style={{ background: labelled ? "transparent" : "var(--color-lime)" }}
+        className="pointer-events-none fixed left-0 top-0 z-[9999] -ml-[2px] -mt-[2px] size-1 rounded-full opacity-0 transition-opacity duration-200"
+        style={{
+          background: labelled || invert ? "transparent" : "var(--color-crystal)",
+        }}
       />
       <div
         ref={ringRef}
         aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[9999] flex h-[34px] min-w-[34px] origin-center items-center justify-center whitespace-nowrap rounded-full border-[1.5px] font-mono text-xs font-semibold opacity-0 transition-[opacity,background,padding,border-color] duration-200"
+        className="pointer-events-none fixed left-0 top-0 z-[9999] flex origin-center items-center justify-center whitespace-nowrap rounded-full border-[1.5px] font-mono text-[11px] font-medium opacity-0 transition-[opacity,background,padding,border-color,width,height] duration-200"
         style={{
-          color: "var(--color-ink)",
-          background: labelled ? "var(--color-lime)" : "transparent",
-          padding: labelled ? "0 14px" : "0",
+          height: invert && !labelled ? 44 : 28,
+          minWidth: invert && !labelled ? 44 : 28,
+          padding: labelled ? "0 12px" : 0,
+          color: "var(--color-tar)",
+          background: labelled
+            ? "var(--color-hazmat)"
+            : invert
+              ? "var(--color-bone)"
+              : "transparent",
           borderColor: labelled
-            ? "var(--color-lime)"
-            : "oklch(0.86 0.17 125 / 0.6)",
+            ? "var(--color-hazmat)"
+            : invert
+              ? "var(--color-bone)"
+              : "color-mix(in oklch, var(--color-crystal) 70%, transparent)",
+          mixBlendMode: invert && !labelled ? "difference" : "normal",
         }}
       >
         {label}

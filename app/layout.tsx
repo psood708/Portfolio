@@ -4,7 +4,9 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/LoadingScreen";
 import MotionProvider from "@/components/MotionProvider";
-import NeuralCursor from "@/components/NeuralCursor";
+import Cursor from "@/components/Cursor";
+import Grain from "@/components/Grain";
+import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -48,8 +50,10 @@ export default function RootLayout({
     <html lang="en" className={`${archivo.variable} ${plexMono.variable}`}>
       <body>
         <MotionProvider>
+          <SmoothScroll />
+          <Grain />
+          <Cursor />
           <LoadingScreen />
-          <NeuralCursor />
           <Nav />
           <main>{children}</main>
           <Footer />
