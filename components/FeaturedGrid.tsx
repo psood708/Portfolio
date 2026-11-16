@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FEATURED } from "@/lib/content";
@@ -29,10 +30,22 @@ export default function FeaturedGrid() {
             className="group flex h-full flex-col overflow-hidden rounded-[18px] border border-line bg-surface transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:border-lime md:rounded-[20px]"
           >
             <div className="overflow-hidden">
-              <Hatch
-                label={p.shot}
-                className="transition-transform duration-500 group-hover:scale-[1.04]"
-              />
+              {p.img ? (
+                <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/10" }}>
+                  <Image
+                    src={p.img}
+                    alt={p.shot}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
+              ) : (
+                <Hatch
+                  label={p.shot}
+                  className="transition-transform duration-500 group-hover:scale-[1.04]"
+                />
+              )}
             </div>
             <div className="flex items-end justify-between gap-3 p-4 md:gap-4 md:px-6 md:py-[22px]">
               <div className="min-w-0">

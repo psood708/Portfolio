@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { LAB } from "@/lib/content";
 import { viewportOnce } from "@/lib/motion";
@@ -30,7 +31,7 @@ export default function LabGrid() {
           target="_blank"
           rel="noreferrer"
           data-cursor="open ↗"
-          className="flex flex-col gap-4 rounded-[20px] border border-line bg-surface p-5 transition-colors duration-300 hover:border-violet"
+          className="group flex flex-col gap-4 rounded-[20px] border border-line bg-surface p-5 transition-colors duration-300 hover:border-violet"
         >
           <div className="flex items-center justify-between">
             <span className="font-mono text-xs text-mute-3">{l.date}</span>
@@ -47,7 +48,19 @@ export default function LabGrid() {
             </span>
           </div>
 
-          <Hatch label={l.shot} ratio="4/3" className="rounded-xl" />
+          {l.img ? (
+            <div className="relative w-full overflow-hidden rounded-xl" style={{ aspectRatio: "4/3" }}>
+              <Image
+                src={l.img}
+                alt={l.shot}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            </div>
+          ) : (
+            <Hatch label={l.shot} ratio="4/3" className="rounded-xl" />
+          )}
 
           <div>
             <h2 className="m-0 text-2xl font-semibold tracking-[-0.02em]">{l.name}</h2>

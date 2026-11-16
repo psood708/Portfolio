@@ -82,6 +82,8 @@ export type Project = {
   metricLabel: string;
   year: string;
   shot: string;
+  /** Optional real screenshot. Path relative to /public, e.g. "/work/memoryweave.png" */
+  img?: string;
   href: string;
   tags: Tag[];
 };
@@ -176,6 +178,8 @@ export type LabEntry = {
   status: "shipped" | "cooking" | "broke it";
   date: string;
   shot: string;
+  /** Optional real screenshot. Path relative to /public, e.g. "/lab/finfun.png" */
+  img?: string;
   rot: number;
   href: string;
 };
@@ -294,7 +298,6 @@ export const INTERESTS = [
 export const NAV = [
   { label: "Home", href: "/" },
   { label: "Work", href: "/work" },
-  { label: "Lab", href: "/lab" },
   { label: "About", href: "/about" },
 ] as const;
 

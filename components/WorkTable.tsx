@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import { useState } from "react";
 import { FILTERS, PROJECTS, type Filter } from "@/lib/content";
@@ -144,7 +145,19 @@ export default function WorkTable() {
             transition={BOING}
             className="pointer-events-none fixed left-0 top-0 z-40 hidden w-[260px] overflow-hidden rounded-2xl border border-line-2 bg-surface shadow-2xl md:block"
           >
-            <Hatch label={preview.shot} />
+            {preview.img ? (
+              <div className="relative w-full" style={{ aspectRatio: "16/10" }}>
+                <Image
+                  src={preview.img}
+                  alt={preview.shot}
+                  fill
+                  className="object-cover"
+                  sizes="260px"
+                />
+              </div>
+            ) : (
+              <Hatch label={preview.shot} />
+            )}
             <div className="px-4 py-3 font-mono text-[11px] text-mute-2">
               {preview.name} · {preview.year}
             </div>

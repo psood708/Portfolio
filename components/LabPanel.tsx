@@ -36,11 +36,11 @@ export default function LabPanel() {
           went viral on a Tuesday.
         </span>
         <Link
-          href="/lab"
+          href="/work"
           data-cursor="enter →"
           className="rounded-full bg-ink px-5 py-[13px] text-sm font-semibold text-bone transition-transform duration-200 ease-boing hover:scale-105 md:px-6 md:py-3.5 md:text-[15px]"
         >
-          Enter the lab →
+          See all work →
         </Link>
       </div>
     </motion.div>
