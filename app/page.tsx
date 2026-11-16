@@ -1,6 +1,7 @@
 import Link from "next/link";
 import AskBar from "@/components/AskBar";
 import Hero from "@/components/Hero";
+import Readouts from "@/components/Readouts";
 import FeaturedGrid from "@/components/FeaturedGrid";
 import LabPanel from "@/components/LabPanel";
 import Marquee from "@/components/Marquee";
@@ -11,7 +12,9 @@ export default function Home() {
     <>
       <Hero />
 
-      <section className="mx-auto max-w-[1280px] px-5 pb-10 md:px-8">
+      <Readouts />
+
+      <section className="mx-auto max-w-[1280px] px-5 pb-10 pt-10 md:px-8">
         <AskBar />
       </section>
 

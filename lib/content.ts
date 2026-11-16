@@ -44,11 +44,6 @@ export const BIO_REGISTERS: { max: number; text: string }[] = [
   },
 ];
 
-/** @deprecated temperature mapping; deleted with TempSlider in Task 8. */
-export function bioFor(temp: number): string {
-  return (BIO_REGISTERS.find((r) => temp < r.max) ?? BIO_REGISTERS.at(-1)!).text;
-}
-
 /** The dial tops out at the famous number. */
 export const PURITY_MAX = 99.1;
 export const PURITY_DEFAULT = 99.1;
