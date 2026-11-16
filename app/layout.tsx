@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Geist_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import LoadingScreen from "@/components/LoadingScreen";
@@ -7,17 +7,17 @@ import MotionProvider from "@/components/MotionProvider";
 import NeuralCursor from "@/components/NeuralCursor";
 import "./globals.css";
 
-const bricolage = Bricolage_Grotesque({
+const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["400", "600", "800"],
-  variable: "--font-bricolage",
+  axes: ["wdth"],
+  variable: "--font-archivo",
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
-  variable: "--font-geist-mono",
+  variable: "--font-plex-mono",
   display: "swap",
 });
 
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     template: "%s · Parth Sood",
   },
   description:
-    "Applied AI engineer. Clinical NLP and cohort pipelines by day; vector indexes, agent systems and the evals that keep them honest by night.",
+    "Chemist of applied AI. Clinical NLP and cohort pipelines by day; vector indexes, agent systems and the evals that keep them honest by night.",
   openGraph: {
     title: "Parth Sood — Applied AI Engineer",
     description:
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0f0f0e",
+  themeColor: "#0b0c0a",
   colorScheme: "dark",
 };
 
@@ -45,7 +45,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${archivo.variable} ${plexMono.variable}`}>
       <body>
         <MotionProvider>
           <LoadingScreen />
