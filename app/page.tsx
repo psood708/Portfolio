@@ -1,34 +1,18 @@
 import Link from "next/link";
 import AskBar from "@/components/AskBar";
+import Hero from "@/components/Hero";
 import FeaturedGrid from "@/components/FeaturedGrid";
-import Headline from "@/components/Headline";
 import LabPanel from "@/components/LabPanel";
 import Marquee from "@/components/Marquee";
-import ModelToys from "@/components/ModelToys";
 import Reveal from "@/components/Reveal";
-import TempSlider from "@/components/TempSlider";
-import { SITE } from "@/lib/content";
 
 export default function Home() {
   return (
     <>
-      {/* ── hero ───────────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-[1280px] px-5 pb-8 pt-10 md:px-8 md:pb-12 md:pt-[88px]">
-        <p className="m-0 mb-[18px] font-mono text-xs text-mute-2 md:mb-7 md:text-sm">
-          <span className="text-lime">$</span> whoami → {SITE.role}{" "}
-          <span className="caret-blink inline-block h-[17px] w-[9px] translate-y-[3px] bg-lime align-baseline" />
-        </p>
+      <Hero />
 
-        <Headline />
-
-        <div className="mt-8 grid grid-cols-1 items-end gap-8 md:mt-12 md:grid-cols-[minmax(0,1fr)_520px] md:gap-12">
-          <TempSlider />
-          <AskBar />
-        </div>
-
-        <div className="mt-10 md:mt-12">
-          <ModelToys />
-        </div>
+      <section className="mx-auto max-w-[1280px] px-5 pb-10 md:px-8">
+        <AskBar />
       </section>
 
       <Marquee />

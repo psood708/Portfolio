@@ -23,6 +23,69 @@ const BUBBLES = [150, 172, 196, 214, 238, 252, 186].map((x, i) => ({
 const SLAM = { type: "spring", stiffness: 520, damping: 22, mass: 0.9 } as const;
 
 /**
+ * Rendered as its own component so it reads the phase from context: when the
+ * reaction finishes, these unmount in the same commit the hero's tiles mount,
+ * and the shared `layoutId`s hand the boxes over with no crossfade — even
+ * though the overlay around them is still fading out.
+ */
+function NameTiles({ ms, calm }: { ms: number; calm: boolean }) {
+  const { phase } = useIntro();
+  if (phase !== "playing") return null;
+
+  const tilesShown = calm ? 4 : TILE_AT.filter((t) => ms >= t).length;
+  const oodShown = calm || ms >= BEATS.ood;
+  const lastSlam = tilesShown > 0 ? TILE_AT[tilesShown - 1] : -1;
+  const shaking = !calm && lastSlam >= 0 && ms - lastSlam < 180;
+
+  return (
+    <motion.div
+      className="relative flex flex-col gap-[clamp(6px,0.6vw,10px)]"
+      animate={shaking ? { x: [0, -7, 6, -3, 0] } : { x: 0 }}
+      transition={{ duration: 0.18 }}
+    >
+      <div className="flex gap-[clamp(6px,0.6vw,10px)]">
+        {NAME_TILES.slice(0, 3).map((e, i) =>
+          tilesShown > i ? (
+            <motion.div
+              key={e.symbol}
+              initial={calm ? false : { scale: 1.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={SLAM}
+            >
+              <ElementTile element={e} size="xl" layoutId={`tile-${e.symbol}`} />
+            </motion.div>
+          ) : (
+            <div key={e.symbol} style={{ width: "var(--tile)", height: "var(--tile)" }} />
+          ),
+        )}
+      </div>
+      <div className="flex items-end gap-[clamp(6px,0.6vw,10px)]">
+        {tilesShown > 3 ? (
+          <motion.div
+            initial={calm ? false : { scale: 1.7, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={SLAM}
+          >
+            <ElementTile element={NAME_TILES[3]} size="xl" layoutId="tile-S" />
+          </motion.div>
+        ) : (
+          <div style={{ width: "var(--tile)", height: "var(--tile)" }} />
+        )}
+        <motion.span
+          className="display-condensed pb-[0.04em] font-display font-extrabold leading-none tracking-[-0.03em]"
+          style={{ fontSize: "calc(var(--tile) * 0.78)" }}
+          initial={calm ? false : { opacity: 0, x: -12 }}
+          animate={{ opacity: oodShown ? 1 : 0, x: oodShown ? 0 : -12 }}
+          transition={{ duration: 0.35, ease: EASE_OUT }}
+        >
+          ood
+        </motion.span>
+      </div>
+    </motion.div>
+  );
+}
+
+/**
  * "The Reaction". A flask draws itself, fills with crystal, flashes hazmat,
  * and the four name tiles slam in over the smoke. The tiles carry `layoutId`s
  * the hero's title card shares, so when this unmounts they glide into place
@@ -74,11 +137,7 @@ export default function Preloader() {
   }, [playing]);
 
   const typed = calm ? TYPED : TYPED.slice(0, Math.floor((ms / 300) * TYPED.length));
-  const tilesShown = calm ? 4 : TILE_AT.filter((t) => ms >= t).length;
   const flaskGone = calm || ms >= BEATS.flash + 100;
-  const oodShown = calm || ms >= BEATS.ood;
-  const lastSlam = tilesShown > 0 ? TILE_AT[tilesShown - 1] : -1;
-  const shaking = !calm && lastSlam >= 0 && ms - lastSlam < 180;
 
   return (
     <AnimatePresence>
@@ -187,51 +246,7 @@ export default function Preloader() {
             />
           )}
 
-          {/* ── the name, tile by tile ────────────────────────────────── */}
-          <motion.div
-            className="relative flex flex-col gap-[0.6vw]"
-            animate={shaking ? { x: [0, -7, 6, -3, 0] } : { x: 0 }}
-            transition={{ duration: 0.18 }}
-          >
-            <div className="flex gap-[0.6vw]">
-              {NAME_TILES.slice(0, 3).map((e, i) =>
-                tilesShown > i ? (
-                  <motion.div
-                    key={e.symbol}
-                    initial={calm ? false : { scale: 1.7, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={SLAM}
-                  >
-                    <ElementTile element={e} size="xl" layoutId={`tile-${e.symbol}`} />
-                  </motion.div>
-                ) : (
-                  <div key={e.symbol} style={{ width: "var(--tile)", height: "var(--tile)" }} />
-                ),
-              )}
-            </div>
-            <div className="flex items-end gap-[0.6vw]">
-              {tilesShown > 3 ? (
-                <motion.div
-                  initial={calm ? false : { scale: 1.7, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={SLAM}
-                >
-                  <ElementTile element={NAME_TILES[3]} size="xl" layoutId="tile-S" />
-                </motion.div>
-              ) : (
-                <div style={{ width: "var(--tile)", height: "var(--tile)" }} />
-              )}
-              <motion.span
-                className="display-condensed pb-[0.04em] font-display font-extrabold leading-none tracking-[-0.03em]"
-                style={{ fontSize: "calc(var(--tile) * 0.78)" }}
-                initial={calm ? false : { opacity: 0, x: -12 }}
-                animate={{ opacity: oodShown ? 1 : 0, x: oodShown ? 0 : -12 }}
-                transition={{ duration: 0.35, ease: EASE_OUT }}
-              >
-                ood
-              </motion.span>
-            </div>
-          </motion.div>
+          <NameTiles ms={ms} calm={calm} />
 
           {/* ── the typed line ────────────────────────────────────────── */}
           <p className="absolute bottom-10 left-5 m-0 font-mono text-xs text-smoke md:left-8">
