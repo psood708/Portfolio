@@ -2,7 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import LoadingScreen from "@/components/LoadingScreen";
+import IntroProvider from "@/components/IntroProvider";
+import Preloader from "@/components/Preloader";
 import MotionProvider from "@/components/MotionProvider";
 import Cursor from "@/components/Cursor";
 import Grain from "@/components/Grain";
@@ -50,13 +51,15 @@ export default function RootLayout({
     <html lang="en" className={`${archivo.variable} ${plexMono.variable}`}>
       <body>
         <MotionProvider>
-          <SmoothScroll />
-          <Grain />
-          <Cursor />
-          <LoadingScreen />
-          <Nav />
-          <main>{children}</main>
-          <Footer />
+          <IntroProvider>
+            <SmoothScroll />
+            <Grain />
+            <Cursor />
+            <Preloader />
+            <Nav />
+            <main>{children}</main>
+            <Footer />
+          </IntroProvider>
         </MotionProvider>
       </body>
     </html>
