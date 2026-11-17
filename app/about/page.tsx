@@ -1,74 +1,67 @@
 import type { Metadata } from "next";
-import AboutPrinciples from "@/components/AboutPrinciples";
+import Notebook from "@/components/Notebook";
 import PixelPortrait from "@/components/PixelPortrait";
-import { portraitImage } from "@/lib/assets";
+import Principles from "@/components/Principles";
 import Reveal from "@/components/Reveal";
-import { STACK, TIMELINE } from "@/lib/content";
+import SectionStamp from "@/components/SectionStamp";
+import StackTable from "@/components/StackTable";
+import { portraitImage } from "@/lib/assets";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Data Science Analyst building applied AI in healthcare — clinical NLP, cohort pipelines, retrieval infrastructure. Previously ISRO and MoMacMo.",
+    "Chemist of applied AI in healthcare — clinical NLP, cohort pipelines, retrieval infrastructure. Previously ISRO and MoMacMo.",
 };
 
 export default function AboutPage() {
+  const portrait = portraitImage();
+
   return (
     <>
-      <section className="mx-auto grid max-w-[1280px] grid-cols-1 gap-10 px-5 py-10 md:grid-cols-[420px_minmax(0,1fr)] md:gap-14 md:px-8 md:py-[72px]">
-        <Reveal className="mx-auto w-full max-w-[320px] md:max-w-none">
-          <PixelPortrait src={portraitImage()} />
-        </Reveal>
+      <section className="mx-auto max-w-[1280px] px-5 pt-8 md:px-8 md:pt-12">
+        <SectionStamp index="01" label="The chemist" className="mb-8 md:mb-12" />
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[400px_minmax(0,1fr)] md:gap-16">
+          <div className="mx-auto w-full max-w-[340px] md:max-w-none">
+            <PixelPortrait src={portrait} />
+          </div>
 
-        <div className="flex flex-col gap-7 md:gap-8">
-          <h1 className="m-0 text-about font-extrabold leading-[0.95] tracking-[-0.04em]">
-            Part engineer, part <span className="text-lime">prompt whisperer</span>,
-            full-time tinkerer.
-          </h1>
-          <p className="m-0 max-w-[640px] text-[17px] leading-[1.55] text-mute-1 md:text-[19px]">
-            I build applied AI in healthcare — ML pipelines that pull patient cohorts
-            out of high-dimensional clinical data, and bio-NLP that reads what the
-            structured tables miss: BioBERT over EHR notes, PubMedBERT over
-            publications, UMAP and BERTopic to surface prescribing patterns and
-            physician referral networks. Before that I moved 10TB+ of mission
-            telemetry through PySpark at ISRO’s Space Applications Centre. Off the
-            clock I write the layer underneath — a vector index from scratch in Rust,
-            a three-tier memory system, agents that earn their evals. I care about
-            evals, latency budgets and the unglamorous plumbing that makes AI
-            trustworthy.
-          </p>
-          <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
-            {STACK.map((s) => (
-              <li
-                key={s}
-                className="rounded-full border border-line-2 px-3.5 py-2 font-mono text-[13px] transition-[transform,background,color] duration-250 ease-boing hover:-translate-y-[3px] hover:-rotate-3 hover:bg-lime hover:text-ink"
+          <div className="flex flex-col gap-7 md:gap-9">
+            <Reveal kind="wipe">
+              <h1
+                className="display-condensed m-0 font-display font-extrabold leading-[0.95] tracking-[-0.03em]"
+                style={{ fontSize: "var(--text-about)" }}
               >
-                {s}
-              </li>
-            ))}
-          </ul>
+                Part chemist, part engineer, full-time tinkerer.
+              </h1>
+            </Reveal>
+            <Reveal>
+              <p className="m-0 max-w-[62ch] text-[17px] leading-[1.55] text-bone/85 md:text-[19px]">
+                I build applied AI in healthcare — ML pipelines that pull patient cohorts
+                out of high-dimensional clinical data, and bio-NLP that reads what the
+                structured tables miss: BioBERT over EHR notes, PubMedBERT over
+                publications, UMAP and BERTopic to surface prescribing patterns and
+                physician referral networks. Before that I moved 10TB+ of mission
+                telemetry through PySpark at ISRO’s Space Applications Centre. Off the
+                clock I write the layer underneath — a vector index from scratch in Rust,
+                a three-tier memory system, agents that earn their evals. I care about
+                evals, latency budgets and the unglamorous plumbing that makes AI
+                trustworthy.
+              </p>
+            </Reveal>
+            <StackTable />
+          </div>
         </div>
       </section>
 
       {/* ── principles: pinned + stacked ───────────────────────────────── */}
-      <section className="mx-auto max-w-[1280px] px-5 md:px-8">
-        <AboutPrinciples />
+      <section className="mx-auto max-w-[1280px] px-5 pt-16 md:px-8 md:pt-24">
+        <Principles />
       </section>
 
-      {/* ── git log --career ───────────────────────────────────────────── */}
-      <section className="mx-auto max-w-[1280px] px-5 pb-20 pt-10 md:px-8 md:pb-[72px] md:pt-10">
-        <h2 className="m-0 mb-2 font-mono text-xs font-normal text-mute-3">
-          git log --career
-        </h2>
-        {TIMELINE.map((t) => (
-          <Reveal
-            key={t.where}
-            className="grid grid-cols-1 gap-1.5 border-b border-line py-5 md:grid-cols-[160px_minmax(0,1fr)_minmax(0,1fr)] md:items-baseline md:gap-6 md:py-[22px]"
-          >
-            <span className="font-mono text-[13px] text-lime">{t.when}</span>
-            <span className="text-[22px] font-semibold md:text-[26px]">{t.where}</span>
-            <span className="text-base text-mute-1">{t.what}</span>
-          </Reveal>
-        ))}
+      {/* ── lab notebook ──────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-[1280px] px-5 pb-20 pt-6 md:px-8 md:pb-[72px]">
+        <SectionStamp index="02" label="Lab notebook" className="mb-6" />
+        <Notebook />
       </section>
     </>
   );
