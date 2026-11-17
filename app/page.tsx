@@ -1,4 +1,3 @@
-import Link from "next/link";
 import AskBar from "@/components/AskBar";
 import Batches from "@/components/Batches";
 import CautionBand from "@/components/CautionBand";
@@ -7,6 +6,7 @@ import Readouts from "@/components/Readouts";
 import Reveal from "@/components/Reveal";
 import RvPanel from "@/components/RvPanel";
 import SectionStamp from "@/components/SectionStamp";
+import TransitionLink from "@/components/TransitionLink";
 import { projectImage } from "@/lib/assets";
 import { toCard } from "@/lib/cards";
 import { FEATURED, LAB } from "@/lib/content";
@@ -37,13 +37,13 @@ export default function Home() {
             >
               Batches
             </h2>
-            <Link
+            <TransitionLink
               href="/work"
               data-cursor="all batches"
               className="flex-none font-mono text-[13px] text-smoke transition-colors hover:text-hazmat"
             >
               all batches ↗
-            </Link>
+            </TransitionLink>
           </Reveal>
         </div>
         <Batches cards={cards} />

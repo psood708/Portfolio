@@ -8,6 +8,7 @@ import MotionProvider from "@/components/MotionProvider";
 import Cursor from "@/components/Cursor";
 import Grain from "@/components/Grain";
 import SmoothScroll from "@/components/SmoothScroll";
+import TransitionProvider from "@/components/TransitionProvider";
 import { pixelStamp } from "@/lib/assets";
 import "./globals.css";
 
@@ -53,6 +54,7 @@ export default function RootLayout({
       <body>
         <MotionProvider>
           <IntroProvider>
+            <TransitionProvider>
             <SmoothScroll />
             <Grain />
             <Cursor />
@@ -60,6 +62,7 @@ export default function RootLayout({
             <Nav />
             <main>{children}</main>
             <Footer stamp={pixelStamp()} />
+            </TransitionProvider>
           </IntroProvider>
         </MotionProvider>
       </body>

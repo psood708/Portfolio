@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { NAME_TILES } from "@/lib/elements";
 import { BEATS, INTRO_CALM_MS, INTRO_MS, TILE_AT } from "@/lib/intro";
@@ -97,6 +97,19 @@ export default function Preloader() {
   const playing = phase === "playing";
   const [calm, setCalm] = useState(false);
   const [ms, setMs] = useState(0);
+  // The overlay outlives `playing` by one fade, then unmounts for good. Done by
+  // hand rather than AnimatePresence so nothing invisible can linger over the
+  // page and eat clicks.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    if (playing) {
+      setMounted(true);
+      return;
+    }
+    if (!mounted) return;
+    const t = setTimeout(() => setMounted(false), 550);
+    return () => clearTimeout(t);
+  }, [playing, mounted]);
 
   useEffect(() => {
     setCalm(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -139,16 +152,20 @@ export default function Preloader() {
   const typed = calm ? TYPED : TYPED.slice(0, Math.floor((ms / 300) * TYPED.length));
   const flaskGone = calm || ms >= BEATS.flash + 100;
 
+  if (!mounted) return null;
+
   return (
-    <AnimatePresence>
-      {playing && (
-        <motion.div
-          key="reaction"
-          exit={{ opacity: 0, transition: { duration: 0.5, ease: EASE_OUT } }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-tar"
-          role="status"
-          aria-label="Loading"
-        >
+    <motion.div
+      key="reaction"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: playing ? 1 : 0 }}
+      transition={{ duration: 0.5, ease: EASE_OUT }}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-tar"
+      style={{ pointerEvents: playing ? "auto" : "none" }}
+      role="status"
+      aria-label="Loading"
+      aria-hidden={!playing}
+    >
           {/* ── the flask ─────────────────────────────────────────────── */}
           {!calm && (
             <motion.svg
@@ -254,8 +271,6 @@ export default function Preloader() {
             {typed.slice(1)}
             <span className="caret-blink ml-1 inline-block h-[0.9em] w-[7px] translate-y-[1px] bg-crystal align-middle" />
           </p>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    </motion.div>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { RV_COPY } from "@/lib/content";
@@ -8,6 +7,7 @@ import { tileFor } from "@/lib/elements";
 import ElementTile from "./ElementTile";
 import Magnetic from "./Magnetic";
 import SectionStamp from "./SectionStamp";
+import TransitionLink from "./TransitionLink";
 
 type Props = { entries: { name: string; slug: string; status: string }[] };
 
@@ -39,13 +39,13 @@ export default function RvPanel({ entries }: Props) {
             <span style={{ color: "color-mix(in oklch, var(--color-tar) 55%, transparent)" }}>{RV_COPY.sub}</span>
           </h2>
           <Magnetic>
-            <Link
+            <TransitionLink
               href="/work#experiments"
               data-cursor="open"
               className="block rounded-full bg-tar px-6 py-3.5 text-[15px] font-semibold text-bone transition-colors duration-200 hover:bg-hazmat hover:text-tar"
             >
               {RV_COPY.cta}
-            </Link>
+            </TransitionLink>
           </Magnetic>
         </div>
 

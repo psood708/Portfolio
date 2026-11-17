@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   AnimatePresence,
@@ -14,6 +13,7 @@ import { LOGO_TILE } from "@/lib/elements";
 import { BOING, EASE_WIPE, clipUp } from "@/lib/motion";
 import ElementTile from "./ElementTile";
 import Magnetic from "./Magnetic";
+import TransitionLink from "./TransitionLink";
 
 export default function Nav() {
   const pathname = usePathname();
@@ -72,7 +72,7 @@ export default function Nav() {
             const active = isActive(item.href);
             return (
               <Magnetic key={item.href} strength={6}>
-                <Link
+                <TransitionLink
                   href={item.href}
                   className="relative block rounded-full px-4 py-2 transition-colors"
                   style={{ color: active ? "var(--color-tar)" : undefined }}
@@ -85,7 +85,7 @@ export default function Nav() {
                     />
                   )}
                   {item.label}
-                </Link>
+                </TransitionLink>
               </Magnetic>
             );
           })}
@@ -95,14 +95,14 @@ export default function Nav() {
         <div className="hidden md:block">
           {!onContact && (
             <Magnetic>
-              <Link
+              <TransitionLink
                 href="/contact"
                 data-cursor="say it"
                 className="block rounded-full border px-[18px] py-2.5 text-sm transition-colors duration-200 hover:border-hazmat hover:bg-hazmat hover:text-tar"
                 style={{ borderColor: "color-mix(in oklch, var(--color-bone) 40%, transparent)" }}
               >
                 {CONTACT_LABEL}
-              </Link>
+              </TransitionLink>
             </Magnetic>
           )}
         </div>
@@ -139,7 +139,7 @@ export default function Nav() {
             >
               {[...NAV, { label: CONTACT_LABEL, href: "/contact" }].map((item) => (
                 <motion.div key={item.href} variants={clipUp}>
-                  <Link
+                  <TransitionLink
                     href={item.href}
                     onClick={() => setOpen(false)}
                     className="flex items-baseline justify-between border-b py-5 font-display text-[44px] font-extrabold leading-none tracking-[-0.03em]"
@@ -151,7 +151,7 @@ export default function Nav() {
                   >
                     {item.label}
                     <span className="font-mono text-xs text-smoke">↗</span>
-                  </Link>
+                  </TransitionLink>
                 </motion.div>
               ))}
             </motion.div>

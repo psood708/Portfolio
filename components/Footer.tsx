@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { FOOTER, LINKS, SITE } from "@/lib/content";
 import Reveal from "./Reveal";
+import TransitionLink from "./TransitionLink";
 
 type Props = { stamp: string | null };
 
@@ -19,7 +20,7 @@ export default function Footer({ stamp }: Props) {
     <footer className="mx-auto max-w-[1280px] px-5 md:px-8">
       {sendoff && (
         <div className="flex flex-col items-start justify-between gap-8 border-t border-line py-12 md:mt-16 md:flex-row md:items-end md:py-16">
-          <Link
+          <TransitionLink
             href="/contact"
             data-cursor="say it"
             onPointerEnter={() => setAside(true)}
@@ -44,7 +45,7 @@ export default function Footer({ stamp }: Props) {
             >
               {FOOTER.aside}
             </motion.span>
-          </Link>
+          </TransitionLink>
 
           <ul className="m-0 flex list-none flex-col gap-1.5 p-0 text-left md:items-end md:text-right">
             {LINKS.map((k) => (
