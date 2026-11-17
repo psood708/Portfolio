@@ -4,7 +4,7 @@ import Hero from "@/components/Hero";
 import Readouts from "@/components/Readouts";
 import FeaturedGrid from "@/components/FeaturedGrid";
 import LabPanel from "@/components/LabPanel";
-import Marquee from "@/components/Marquee";
+import CautionBand from "@/components/CautionBand";
 import Reveal from "@/components/Reveal";
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
         <AskBar />
       </section>
 
-      <Marquee />
+      <CautionBand />
 
       {/* ── shipped stuff ──────────────────────────────────────────────── */}
       <section className="mx-auto max-w-[1280px] px-5 pb-8 pt-10 md:px-8 md:pb-8 md:pt-[72px]">
