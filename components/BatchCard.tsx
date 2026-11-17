@@ -22,7 +22,7 @@ type Props = {
  */
 export default function BatchCard({ card, index, image, ratio = "3/4", sizes, className = "" }: Props) {
   const num = String(index + 1).padStart(2, "0");
-  const symbols = card.stack ? stackSymbols(card.stack) : [tileFor(card.badge).symbol];
+  const symbols = card.stack ? stackSymbols(card.stack) : [tileFor(card.name).symbol];
   const label = card.kind === "batch" ? `batch ${num}` : `experiment ${num}`;
 
   return (
