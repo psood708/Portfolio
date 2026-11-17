@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { LAB } from "@/lib/content";
 import { viewportOnce } from "@/lib/motion";
-import Hatch from "./Hatch";
+import Shot from "./Shot";
 
 /**
  * "Cards drift in on scroll with slight random rotation (−2°…2°) settling to 0."
@@ -59,7 +59,7 @@ export default function LabGrid() {
               />
             </div>
           ) : (
-            <Hatch label={l.shot} ratio="4/3" className="rounded-xl" />
+            <Shot src={null} alt={l.shot} seed={l.slug} symbols={[]} number="" ratio="4/3" />
           )}
 
           <div>

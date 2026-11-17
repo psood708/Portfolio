@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motio
 import { useState } from "react";
 import { FILTERS, PROJECTS, type Filter } from "@/lib/content";
 import { BOING, EASE_OUT } from "@/lib/motion";
-import Hatch from "./Hatch";
+import Shot from "./Shot";
 
 const GRID = "grid-cols-[56px_minmax(0,1fr)_300px_140px_80px]";
 
@@ -156,7 +156,7 @@ export default function WorkTable() {
                 />
               </div>
             ) : (
-              <Hatch label={preview.shot} />
+              <Shot src={null} alt={preview.shot} seed={preview.shot} symbols={[]} number="" />
             )}
             <div className="px-4 py-3 font-mono text-[11px] text-mute-2">
               {preview.name} · {preview.year}

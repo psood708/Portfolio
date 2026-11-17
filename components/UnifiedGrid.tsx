@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { PROJECTS, LAB } from "@/lib/content";
 import { BOING, EASE_OUT, viewportOnce } from "@/lib/motion";
-import Hatch from "./Hatch";
+import Shot from "./Shot";
 
 /* ── unified filter set ────────────────────────────────────────────────── */
 const FILTERS = ["All", "Agents", "RAG", "Evals", "Systems", "Experiments"] as const;
@@ -157,7 +157,7 @@ export default function UnifiedGrid() {
                   />
                 </div>
               ) : (
-                <Hatch label={card.shot} ratio="16/10" className="rounded-xl" />
+                <Shot src={null} alt={card.shot} seed={card.key} symbols={[]} number="" />
               )}
 
               {/* ── text ───────────────────────────────────────────────── */}

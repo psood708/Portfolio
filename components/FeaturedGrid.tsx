@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { FEATURED } from "@/lib/content";
 import { cascade, revealVariants, viewportOnce } from "@/lib/motion";
-import Hatch from "./Hatch";
+import Shot from "./Shot";
 
 /**
  * "Shipped stuff" cards. Hover lifts the card 4px, turns the border lime and
@@ -41,10 +41,7 @@ export default function FeaturedGrid() {
                   />
                 </div>
               ) : (
-                <Hatch
-                  label={p.shot}
-                  className="transition-transform duration-500 group-hover:scale-[1.04]"
-                />
+                <Shot src={null} alt={p.shot} seed={p.shot} symbols={[]} number="" />
               )}
             </div>
             <div className="flex items-end justify-between gap-3 p-4 md:gap-4 md:px-6 md:py-[22px]">
