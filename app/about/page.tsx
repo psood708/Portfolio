@@ -10,7 +10,7 @@ import { portraitImage } from "@/lib/assets";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Chemist of applied AI in healthcare — clinical NLP, cohort pipelines, retrieval infrastructure. Previously ISRO and MoMacMo.",
+    "Applied AI engineer in healthcare — clinical NLP, cohort pipelines, retrieval infrastructure. Previously ISRO and MoMacMo.",
 };
 
 export default function AboutPage() {
@@ -19,7 +19,7 @@ export default function AboutPage() {
   return (
     <>
       <section className="mx-auto max-w-[1280px] px-5 pt-8 md:px-8 md:pt-12">
-        <SectionStamp index="01" label="The chemist" className="mb-8 md:mb-12" />
+        <SectionStamp index="01" label="The engineer" className="mb-8 md:mb-12" />
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[400px_minmax(0,1fr)] md:gap-16">
           <div className="mx-auto w-full max-w-[340px] md:max-w-none">
             <PixelPortrait src={portrait} />
@@ -31,7 +31,7 @@ export default function AboutPage() {
                 className="display-condensed m-0 font-display font-extrabold leading-[0.95] tracking-[-0.03em]"
                 style={{ fontSize: "var(--text-about)" }}
               >
-                Part chemist, part engineer, full-time tinkerer.
+                Part engineer, part prompt whisperer, full-time tinkerer.
               </h1>
             </Reveal>
             <Reveal>

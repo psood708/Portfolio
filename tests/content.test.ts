@@ -46,8 +46,8 @@ describe("content", () => {
   });
 
   it("site copy exists", () => {
-    expect(C.SITE.title).toBe("Chemist of applied AI");
-    expect(C.SITE.roleLine).toBe("CHEMIST · APPLIED AI · ASPECT RATIO · PUNE");
+    expect(C.SITE.title).toBe("Applied AI engineer");
+    expect(C.SITE.roleLine).toBe("APPLIED AI ENGINEER · ASPECT RATIO · PUNE");
     expect(C.SITE.stamp).toBe("99.1% PURE · NO HALF MEASURES");
     expect(C.CONTACT_LABEL).toBe("Say my name");
     expect(C.RV_COPY.cta).toBe("open the RV ↗");
@@ -62,6 +62,14 @@ describe("content", () => {
   it("grounding doc is stable and still mentions every project", () => {
     for (const p of C.PROJECTS) expect(PORTFOLIO_CONTEXT).toContain(p.name);
     expect(PORTFOLIO_CONTEXT).not.toMatch(/cook/i);
+  });
+
+  it("never calls Parth a chemist", () => {
+    for (const dir of ["app", "components", "lib"]) {
+      for (const f of walk(dir)) {
+        expect(readFileSync(f, "utf8"), f).not.toMatch(/\bchemist\b/i);
+      }
+    }
   });
 
   it("no drug vocabulary anywhere in source", () => {

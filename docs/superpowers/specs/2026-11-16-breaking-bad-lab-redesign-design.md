@@ -56,7 +56,7 @@ Parth handed over the "how"; approach 2 is my call, stated to him before this do
 ## 5. The design
 
 ### 5.1 Concept
-The site is **Parth's lab**. He is a chemist of applied AI: precise, measured, no half measures. The periodic table is the type system. Projects are **batches** with a **purity** metric (their existing headline metric). Experiments are what came out of the RV. The ask bar is the lab's intercom. The whole thing sits in a desert at dusk: hot haze above, cold lab light below.
+The site is **Parth's lab**. He is an applied AI engineer who runs it like a lab: precise, measured, no half measures. The periodic table is the type system. Projects are **batches** with a **purity** metric (their existing headline metric). Experiments are what came out of the RV. The ask bar is the lab's intercom. The whole thing sits in a desert at dusk: hot haze above, cold lab light below.
 
 ### 5.2 Visual language
 
@@ -93,7 +93,7 @@ Rule of use: tar everywhere, bone for type, element green and crystal blue carry
 - **Cursor** (`components/Cursor.tsx`, replaces NeuralCursor): a thin crystal-blue ring with a centre dot. Over interactive elements it grows into a labelled pill (`open ↗`, `reroll`, `filter`, `send`), the labels coming from the existing `data-cursor` attributes. Over images it inverts (`mix-blend-mode: difference`). Hidden on touch.
 - **Reveal grammar**: section headings reveal by clip-path wipe from the bottom (not fade-up); paragraphs fade up 24px; tiles pop in with the existing `BOING` spring; images unmask with a clip-path inset. One `Reveal` component with a `kind` prop replaces the current one.
 - **Magnetic** hover on primary buttons and nav items (`components/Magnetic.tsx`, ±8px pull).
-- **Section stamps**: every section opens with a mono lab label in the top-left (`§ 01 · THE CHEMIST`) and a thin hairline that draws in on reveal.
+- **Section stamps**: every section opens with a mono lab label in the top-left (`§ 01 · THE ENGINEER`) and a thin hairline that draws in on reveal.
 - All timing constants live in `lib/motion.ts`.
 
 ### 5.4 Preloader — "The Reaction" (`components/Preloader.tsx`, replaces LoadingScreen)
@@ -129,7 +129,7 @@ Reduced motion: still frame of the finished logo row, cleared at 450 ms.
 - Hovering a tile flips it to show the element's full name and number (`Protactinium` style card back); clicking any tile plays a short crystal-blue shimmer across the row.
 - Under the title card, the sub-headline at section scale (not poster scale):
   `Pure, applied AI. [word] of the time.` where `[word]` is the reroll slot (kept from today, now hazmat yellow, underlined with a dashed "measurement" rule). Variants: `99.1%`, `Most`, `All`, `Some`, `Enough`. Same layout-stability trick as today (invisible sizers). **Builder-check call:** the variants are deliberately short (longest is 6 characters) so the sizer trick holds at every width; the sub-headline is sized from `Enough of the time.` as the widest line.
-- Beneath: the role line as a lab label: `CHEMIST · APPLIED AI · ASPECT RATIO · PUNE` with a blinking caret.
+- Beneath: the role line as a lab label: `APPLIED AI ENGINEER · ASPECT RATIO · PUNE` with a blinking caret.
 - Right column (desktop): a slow-rotating field of 10–12 stack tiles in parallax (`useScroll` drives translateY at different rates; mouse position drives ±6px tilt). On mobile they become a single horizontal strip under the sub-headline.
 - Background: `Smoke` canvas, a thin desert horizon line at ~78% height that the smoke sits above, grain on top.
 - Scroll cue bottom-left: `scroll ↓` with the horizon line drawing out.
@@ -164,9 +164,9 @@ Keeps the merged `UnifiedGrid` (projects + experiments, six filters) because the
 - Hover: a floating preview follows the cursor (reuse the follow logic from `WorkTable.tsx`), tinted crystal.
 - `#experiments` anchor scrolls to the first experiment card and preselects the `Experiments` filter.
 
-### 5.7 About page — "§ 01 · THE CHEMIST"
+### 5.7 About page — "§ 01 · THE ENGINEER"
 - Portrait (`components/PixelPortrait.tsx`): `public/portrait.jpg` rendered as **pixel art in the site palette**, inside a hazmat-yellow bracket frame (four L corners that draw in). The browser draws the photo to a canvas, downsamples it to a block grid, and quantises every block to the nearest of the site tokens (tar, lab, element, crystal, hazmat, sand, bone, smoke), so it reads as a sprite drawn in the show's colours — the deliberate contrast to the smooth, cinematic rest of the site. On scroll into view it *resolves*: 48px blocks sharpening to 6px over ~1 s, eased. Hover (or tap) crossfades to the real photo underneath; click toggles it to stay. Reduced motion: the 6px state, no resolve, hover still works. The quantised sprite is also exported once at build time (a small script in `scripts/`) to `public/icon.png` for the favicon and reused as a 24px stamp in the footer. If `portrait.jpg` is missing the frame holds the `Pa` tile composition from section 6. No hat, no glasses, no character props.
-- Headline: `Part chemist, part engineer, full-time tinkerer.` Bio paragraph unchanged in substance.
+- Headline: `Part engineer, part prompt whisperer, full-time tinkerer.` Bio paragraph unchanged in substance.
 - Stack as a periodic-table grid of tiles (a real 2-row layout, not pills). Hover lifts the tile and shows the full name.
 - Principles (pinned-and-stacked cards, effect kept): `01 / prototype — Respect the chemistry` (lab green), `02 / measure — Know your purity` (hazmat), `03 / harden — No half measures` (sand). Bodies kept from today.
 - Timeline becomes **Lab notebook**: mono dates on the left margin like notebook stamps, entries reveal line by line, a hairline "ruled paper" grid behind.
@@ -187,7 +187,7 @@ Only labels and gag copy change; data does not. New/changed exports:
 - `PRINCIPLES` titles updated per 5.7; `bg` values point at the new tokens.
 - `trainMessage`, `tokenMessage` copy per 5.5.
 - New `ELEMENTS` map (symbol → number, name) and `STACK_TILES` (stack string → symbol).
-- `SITE.role` stays `applied_ai_engineer` for the grounding doc; a new `SITE.title = "Chemist of applied AI"` for display.
+- `SITE.role` stays `applied_ai_engineer` for the grounding doc; a new `SITE.title = "Applied AI engineer"` (Parth asked on 2026-11-17 that the word chemist never describe him; the lab is the setting, he is the engineer running it) for display.
 - `lib/portfolio-context.ts` output must stay byte-stable aside from the deliberate copy edits (it is the cached system prompt).
 
 ### 5.11 Accessibility and performance rules

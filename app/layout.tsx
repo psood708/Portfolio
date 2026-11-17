@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: "%s · Parth Sood",
   },
   description:
-    "Chemist of applied AI. Clinical NLP and cohort pipelines by day; vector indexes, agent systems and the evals that keep them honest by night.",
+    "Applied AI engineer. Clinical NLP and cohort pipelines by day; vector indexes, agent systems and the evals that keep them honest by night.",
   openGraph: {
     title: "Parth Sood — Applied AI Engineer",
     description:

@@ -7,8 +7,8 @@
 export const SITE = {
   name: "Parth Sood",
   role: "applied_ai_engineer",
-  title: "Chemist of applied AI",
-  roleLine: "CHEMIST · APPLIED AI · ASPECT RATIO · PUNE",
+  title: "Applied AI engineer",
+  roleLine: "APPLIED AI ENGINEER · ASPECT RATIO · PUNE",
   stamp: "99.1% PURE · NO HALF MEASURES",
   email: "parthsood45@gmail.com",
   handle: "@psood708",
