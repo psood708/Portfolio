@@ -1,13 +1,19 @@
 import Link from "next/link";
 import AskBar from "@/components/AskBar";
-import Hero from "@/components/Hero";
-import Readouts from "@/components/Readouts";
-import FeaturedGrid from "@/components/FeaturedGrid";
-import LabPanel from "@/components/LabPanel";
+import Batches from "@/components/Batches";
 import CautionBand from "@/components/CautionBand";
+import Hero from "@/components/Hero";
+import LabPanel from "@/components/LabPanel";
+import Readouts from "@/components/Readouts";
 import Reveal from "@/components/Reveal";
+import SectionStamp from "@/components/SectionStamp";
+import { projectImage } from "@/lib/assets";
+import { toCard } from "@/lib/cards";
+import { FEATURED } from "@/lib/content";
 
 export default function Home() {
+  const cards = FEATURED.map((p) => ({ ...toCard(p), image: projectImage(p.slug) }));
+
   return (
     <>
       <Hero />
@@ -20,32 +26,30 @@ export default function Home() {
 
       <CautionBand />
 
-      {/* ── shipped stuff ──────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-[1280px] px-5 pb-8 pt-10 md:px-8 md:pb-8 md:pt-[72px]">
-        <Reveal className="mb-4 flex items-end justify-between gap-4 md:mb-8">
-          <h2 className="m-0 text-section font-extrabold leading-[0.95] tracking-[-0.04em]">
-            Shipped stuff
-          </h2>
-          <Link
-            href="/work"
-            data-cursor="all work"
-            className="hidden flex-none font-mono text-[13px] text-mute-2 transition-colors hover:text-lime md:block"
-          >
-            all work →
-          </Link>
-        </Reveal>
-
-        <FeaturedGrid />
-
-        <Link
-          href="/work"
-          className="mt-6 inline-block font-mono text-xs text-mute-2 md:hidden"
-        >
-          all work →
-        </Link>
+      {/* ── batches ────────────────────────────────────────────────────── */}
+      <section className="pt-10 md:pt-16">
+        <div className="mx-auto max-w-[1280px] px-5 md:px-8">
+          <SectionStamp index="03" label="Batches" className="mb-6" />
+          <Reveal kind="wipe" className="mb-6 flex items-end justify-between gap-4 md:mb-10">
+            <h2
+              className="display-condensed m-0 font-display font-extrabold leading-[0.9] tracking-[-0.03em]"
+              style={{ fontSize: "var(--text-section)" }}
+            >
+              Batches
+            </h2>
+            <Link
+              href="/work"
+              data-cursor="all batches"
+              className="flex-none font-mono text-[13px] text-smoke transition-colors hover:text-hazmat"
+            >
+              all batches ↗
+            </Link>
+          </Reveal>
+        </div>
+        <Batches cards={cards} />
       </section>
 
-      {/* ── lab teaser ─────────────────────────────────────────────────── */}
+      {/* ── experiments ────────────────────────────────────────────────── */}
       <section className="mx-auto mt-8 max-w-[1280px] px-5 md:mt-16 md:px-8">
         <LabPanel />
       </section>

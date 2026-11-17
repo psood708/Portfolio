@@ -42,7 +42,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="md:pt-16">
+        <div className="relative md:pt-16">
           <TileField symbols={SYMBOLS} />
         </div>
       </div>

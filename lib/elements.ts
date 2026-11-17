@@ -86,19 +86,41 @@ function pseudoSymbol(label: string): string {
   return `${first}${second}`;
 }
 
-/** Any label can wear a tile. Known ones get their element; unknown ones get a stable stand-in. */
+/**
+ * Any label can wear a tile. Known ones get their element — matched on the
+ * whole label or its first word, so "Python 3.12" is still Python — and
+ * unknown ones get a stable stand-in.
+ */
 export function tileFor(label: string): Element {
-  const known = ELEMENTS[STACK_TILES[label] ?? label];
+  const first = label.split(/[\s/]+/)[0] ?? label;
+  const known = ELEMENTS[STACK_TILES[label] ?? STACK_TILES[first] ?? label];
   if (known) return known;
   return el(pseudoSymbol(label), pseudoNumber(label), label);
 }
 
-/** `"Rust · Axum · Rayon"` → `["Rs", "Ax", "Ra"]`, at most five. */
+/** The next unused two-letter symbol for a label: Py taken → Pd, then Pt… */
+function uniqueSymbol(label: string, used: Set<string>): string {
+  const base = tileFor(label).symbol;
+  if (!used.has(base)) return base;
+  const letters = label.replace(/[^a-z]/gi, "");
+  for (let i = 2; i < letters.length; i++) {
+    const alt = `${letters.charAt(0).toUpperCase()}${letters.charAt(i).toLowerCase()}`;
+    if (!used.has(alt)) return alt;
+  }
+  return base;
+}
+
+/** `"Rust · Axum · Rayon"` → `["Rs", "Ax", "Ra"]`, at most five, no repeats. */
 export function stackSymbols(stack: string): string[] {
+  const used = new Set<string>();
   return stack
     .split("·")
     .map((s) => s.trim())
     .filter(Boolean)
     .slice(0, 5)
-    .map((s) => tileFor(s).symbol);
+    .map((s) => {
+      const sym = uniqueSymbol(s, used);
+      used.add(sym);
+      return sym;
+    });
 }

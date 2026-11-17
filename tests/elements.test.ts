@@ -25,6 +25,11 @@ describe("elements", () => {
     expect(tileFor("mmap").symbol).toBe("Mm");
   });
 
+  it("matches labels by their first word and never repeats a symbol", () => {
+    expect(stackSymbols("Python 3.12 · FastAPI · Pydantic v2 · Next.js")).toEqual(["Py", "Fa", "Pd", "Nx"]);
+    expect(stackSymbols("Python · LangGraph · MCP · Ollama / Groq")).toEqual(["Py", "Lg", "Mc", "Ol"]);
+  });
+
   it("splits a stack string into at most five symbols", () => {
     expect(stackSymbols("Rust · Axum · Rayon · mmap")).toEqual(["Rs", "Ax", "Ra", "Mm"]);
     expect(stackSymbols("a · b · c · d · e · f")).toHaveLength(5);
