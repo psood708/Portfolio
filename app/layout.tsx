@@ -8,6 +8,7 @@ import MotionProvider from "@/components/MotionProvider";
 import Cursor from "@/components/Cursor";
 import Grain from "@/components/Grain";
 import SmoothScroll from "@/components/SmoothScroll";
+import { pixelStamp } from "@/lib/assets";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -58,7 +59,7 @@ export default function RootLayout({
             <Preloader />
             <Nav />
             <main>{children}</main>
-            <Footer />
+            <Footer stamp={pixelStamp()} />
           </IntroProvider>
         </MotionProvider>
       </body>

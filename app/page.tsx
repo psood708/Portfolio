@@ -3,13 +3,13 @@ import AskBar from "@/components/AskBar";
 import Batches from "@/components/Batches";
 import CautionBand from "@/components/CautionBand";
 import Hero from "@/components/Hero";
-import LabPanel from "@/components/LabPanel";
 import Readouts from "@/components/Readouts";
 import Reveal from "@/components/Reveal";
+import RvPanel from "@/components/RvPanel";
 import SectionStamp from "@/components/SectionStamp";
 import { projectImage } from "@/lib/assets";
 import { toCard } from "@/lib/cards";
-import { FEATURED } from "@/lib/content";
+import { FEATURED, LAB } from "@/lib/content";
 
 export default function Home() {
   const cards = FEATURED.map((p) => ({ ...toCard(p), image: projectImage(p.slug) }));
@@ -50,8 +50,8 @@ export default function Home() {
       </section>
 
       {/* ── experiments ────────────────────────────────────────────────── */}
-      <section className="mx-auto mt-8 max-w-[1280px] px-5 md:mt-16 md:px-8">
-        <LabPanel />
+      <section className="mx-auto mt-8 max-w-[1280px] px-5 pb-4 md:mt-16 md:px-8">
+        <RvPanel entries={LAB.map((l) => ({ name: l.name, slug: l.slug, status: l.status }))} />
       </section>
     </>
   );
