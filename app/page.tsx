@@ -14,7 +14,7 @@ export default function Home() {
 
       <Readouts />
 
-      <section className="mx-auto max-w-[1280px] px-5 pb-10 pt-10 md:px-8">
+      <section className="mx-auto max-w-[1280px] px-5 pb-12 pt-14 md:px-8 md:pb-16 md:pt-20">
         <AskBar />
       </section>
 
