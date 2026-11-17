@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AboutPrinciples from "@/components/AboutPrinciples";
-import Portrait from "@/components/Portrait";
+import PixelPortrait from "@/components/PixelPortrait";
+import { portraitImage } from "@/lib/assets";
 import Reveal from "@/components/Reveal";
 import { STACK, TIMELINE } from "@/lib/content";
 
@@ -15,7 +16,7 @@ export default function AboutPage() {
     <>
       <section className="mx-auto grid max-w-[1280px] grid-cols-1 gap-10 px-5 py-10 md:grid-cols-[420px_minmax(0,1fr)] md:gap-14 md:px-8 md:py-[72px]">
         <Reveal className="mx-auto w-full max-w-[320px] md:max-w-none">
-          <Portrait />
+          <PixelPortrait src={portraitImage()} />
         </Reveal>
 
         <div className="flex flex-col gap-7 md:gap-8">
