@@ -66,7 +66,7 @@ The site is **Parth's lab**. He is an applied AI engineer who runs it like a lab
 |---|---|---|
 | `--color-tar` | page background | `#0b0c0a` |
 | `--color-lab` | deep lab green, panels | `#0f2f25` |
-| `--color-element` | tile green (the "Br" tile) | `#2f7a5a` |
+| `--color-element` | tile green (the "Br" tile) | `#2b7053` (tuned from #2f7a5a so bone text clears 4.5:1) |
 | `--color-crystal` | blue crystal accent, links, highlights | `#7fdcf5` |
 | `--color-hazmat` | yellow, CTAs, caution tape, active states | `#f2c230` |
 | `--color-sand` | desert ochre, warm panels | `#c99a5b` |

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { RV_COPY } from "@/lib/content";
 import { tileFor } from "@/lib/elements";
@@ -18,8 +18,9 @@ type Props = { entries: { name: string; slug: string; status: string }[] };
 export default function RvPanel({ entries }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.95", "start 0.45"] });
-  const scale = useTransform(scrollYProgress, [0, 1], [0.9, 1]);
-  const radius = useTransform(scrollYProgress, [0, 1], [48, 24]);
+  const calm = useReducedMotion();
+  const scale = useTransform(scrollYProgress, [0, 1], calm ? [1, 1] : [0.9, 1]);
+  const radius = useTransform(scrollYProgress, [0, 1], calm ? [24, 24] : [48, 24]);
 
   return (
     <div className="relative">
@@ -60,7 +61,7 @@ export default function RvPanel({ entries }: Props) {
               >
                 <ElementTile element={el} size="md" tone="outline" style={{ color: "var(--color-tar)" }} className="[&>div]:!border-tar/60 [&>div]:!text-tar" />
                 <span className="flex-1 text-[17px] font-semibold tracking-[-0.01em] md:text-[19px]">{e.name}</span>
-                <span className="lab-label" style={{ color: "color-mix(in oklch, var(--color-tar) 60%, transparent)" }}>{e.status}</span>
+                <span className="lab-label" style={{ color: "color-mix(in oklch, var(--color-tar) 80%, transparent)" }}>{e.status}</span>
               </li>
             );
           })}

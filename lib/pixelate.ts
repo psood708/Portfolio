@@ -8,7 +8,7 @@ export type RGB = [number, number, number];
 export const PALETTE: { name: string; rgb: RGB }[] = [
   { name: "tar", rgb: [11, 12, 10] },
   { name: "lab", rgb: [15, 47, 37] },
-  { name: "element", rgb: [47, 122, 90] },
+  { name: "element", rgb: [43, 112, 83] },
   { name: "crystal", rgb: [127, 220, 245] },
   { name: "hazmat", rgb: [242, 194, 48] },
   { name: "sand", rgb: [201, 154, 91] },

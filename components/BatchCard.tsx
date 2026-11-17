@@ -13,6 +13,8 @@ type Props = {
   ratio?: string;
   sizes?: string;
   className?: string;
+  /** Heading level, so the card sits correctly under an h1 (work) or an h2 (home). */
+  as?: "h2" | "h3";
 };
 
 /**
@@ -20,7 +22,7 @@ type Props = {
  * spectrum plate), the purity readout, then name, one-liner and the stack as
  * tiles. The whole card is one link.
  */
-export default function BatchCard({ card, index, image, ratio = "3/4", sizes, className = "" }: Props) {
+export default function BatchCard({ card, index, image, ratio = "3/4", sizes, className = "", as: Heading = "h3" }: Props) {
   const num = String(index + 1).padStart(2, "0");
   const symbols = card.stack ? stackSymbols(card.stack) : [tileFor(card.name).symbol];
   const label = card.kind === "batch" ? `batch ${num}` : `experiment ${num}`;
@@ -62,9 +64,9 @@ export default function BatchCard({ card, index, image, ratio = "3/4", sizes, cl
       )}
 
       <div className="relative flex flex-col gap-1.5">
-        <h3 className="m-0 font-display text-[24px] font-semibold leading-[1.05] tracking-[-0.02em] md:text-[28px]">
+        <Heading className="m-0 font-display text-[24px] font-semibold leading-[1.05] tracking-[-0.02em] md:text-[28px]">
           {card.name}
-        </h3>
+        </Heading>
         <p className="m-0 text-[15px] leading-[1.45] text-smoke">{card.line}</p>
       </div>
 

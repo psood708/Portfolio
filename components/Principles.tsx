@@ -26,12 +26,12 @@ export default function Principles() {
             className="flex flex-col gap-4 rounded-[24px] p-7 shadow-[0_-8px_40px_rgba(0,0,0,0.45)] md:p-10"
             style={{ background: p.bg, color: p.fg }}
           >
-            <span className="lab-label opacity-70">{p.index}</span>
-            <h3
+            <span className="lab-label opacity-90">{p.index}</span>
+            <h2
               className="display-condensed m-0 font-display text-[32px] font-extrabold leading-none tracking-[-0.02em] md:text-[48px]"
             >
               {p.title}
-            </h3>
+            </h2>
             <p className="m-0 max-w-[48ch] text-base leading-[1.45] md:text-lg">{p.body}</p>
           </article>
         </motion.div>

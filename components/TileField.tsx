@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { useRef } from "react";
 import { tileFor } from "@/lib/elements";
 import { BOING } from "@/lib/motion";
@@ -30,7 +30,7 @@ const TONES: TileTone[] = [
 ];
 
 function FieldTile({
-  symbol, slot, tone, progress, px, py,
+  symbol, slot, tone, progress, px, py, calm,
 }: {
   symbol: string;
   slot: (typeof SLOTS)[number];
@@ -38,8 +38,9 @@ function FieldTile({
   progress: MotionValue<number>;
   px: MotionValue<number>;
   py: MotionValue<number>;
+  calm: boolean;
 }) {
-  const depth = slot.d * 40;
+  const depth = calm ? 0 : slot.d * 40;
   const y = useTransform(progress, [0, 1], [0, -depth]);
   const tx = useTransform(px, (v) => v * 6 * slot.d * 0.5);
   const ty = useTransform(py, (v) => v * 6 * slot.d * 0.5);
@@ -68,10 +69,11 @@ export default function TileField({ symbols }: Props) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const px = useMotionValue(0);
   const py = useMotionValue(0);
+  const calm = useReducedMotion() ?? false;
 
   const tilt = (e: React.PointerEvent) => {
     const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
+    if (!r || calm) return;
     px.set(((e.clientX - r.left) / r.width - 0.5) * 2);
     py.set(((e.clientY - r.top) / r.height - 0.5) * 2);
   };
@@ -99,6 +101,7 @@ export default function TileField({ symbols }: Props) {
             progress={scrollYProgress}
             px={px}
             py={py}
+            calm={calm}
           />
         ))}
       </div>

@@ -58,7 +58,8 @@ export default function Inventory({ cards }: Props) {
           <ElementTile element={{ symbol: count, number: 0, name: "items" }} size="md" tone="hazmat" className="mb-[0.08em]" />
         </h1>
 
-        <ul className="m-0 flex list-none flex-wrap gap-x-5 gap-y-3 p-0" role="group" aria-label="Filter">
+        <div role="group" aria-label="Filter">
+        <ul className="m-0 flex list-none flex-wrap gap-x-5 gap-y-3 p-0">
           {INVENTORY_FILTERS.map((f) => {
             const on = filter === f;
             const e = f === "All" ? { symbol: "Al", number: 13, name: "All" } : tileFor(f);
@@ -80,6 +81,7 @@ export default function Inventory({ cards }: Props) {
             );
           })}
         </ul>
+        </div>
       </div>
 
       <div id="experiments" className="scroll-mt-28" aria-hidden />
@@ -97,7 +99,7 @@ export default function Inventory({ cards }: Props) {
               onPointerEnter={() => setHovered(card.key)}
               onPointerLeave={() => setHovered(null)}
             >
-              <BatchCard card={card} index={i} image={card.image} ratio="16/10" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="h-full" />
+              <BatchCard as="h2" card={card} index={i} image={card.image} ratio="16/10" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="h-full" />
             </motion.div>
           ))}
         </AnimatePresence>

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-  <rect width="64" height="64" fill="#2f7a5a"/>
+  <rect width="64" height="64" fill="#2b7053"/>
   <rect x="1.5" y="1.5" width="61" height="61" fill="none" stroke="#ece9df" stroke-width="3"/>
   <text x="7" y="15" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="9" fill="#ece9df">91</text>
   <text x="32" y="44" text-anchor="middle" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="28" font-weight="500" fill="#ece9df">Pa</text>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, type HTMLMotionProps } from "framer-motion";
+import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
 import { clipUp, fadeUp, maskIn, viewportOnce } from "@/lib/motion";
 
 export type RevealKind = "fade" | "wipe" | "mask";
@@ -20,9 +20,10 @@ const VARIANTS = { fade: fadeUp, wipe: clipUp, mask: maskIn } as const;
 const ANY_PIXEL = { once: true, amount: "some" } as const;
 
 export default function Reveal({ kind = "fade", delay = 0, children, ...rest }: Props) {
+  const calm = useReducedMotion();
   return (
     <motion.div
-      initial="hidden"
+      initial={calm ? "shown" : "hidden"}
       whileInView="shown"
       viewport={kind === "fade" ? viewportOnce : ANY_PIXEL}
       variants={VARIANTS[kind]}

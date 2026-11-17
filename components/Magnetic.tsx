@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { useRef } from "react";
 
 type Props = {
@@ -13,6 +13,7 @@ type Props = {
 /** Pulls its child toward the pointer while hovered, springs back on leave. */
 export default function Magnetic({ children, strength = 8, className = "" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const calm = useReducedMotion();
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const x = useSpring(mx, { stiffness: 300, damping: 20, mass: 0.5 });
@@ -20,7 +21,7 @@ export default function Magnetic({ children, strength = 8, className = "" }: Pro
 
   const move = (e: React.PointerEvent) => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || calm) return;
     const r = el.getBoundingClientRect();
     const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
     const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);

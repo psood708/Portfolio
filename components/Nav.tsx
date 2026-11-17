@@ -54,7 +54,6 @@ export default function Nav() {
           type="button"
           onClick={() => setExt((i) => i + 1)}
           data-cursor="cd ~"
-          aria-label="Cycle domain extension"
           className="flex select-none items-center gap-1"
         >
           <ElementTile element={LOGO_TILE} size="xs" />
@@ -64,18 +63,20 @@ export default function Nav() {
           <span className="hidden font-mono text-[13px] text-smoke md:inline">
             {EXTENSIONS[ext % EXTENSIONS.length]}
           </span>
+          <span className="sr-only">, cycle the extension</span>
         </button>
 
         {/* ── desktop pills ──────────────────────────────────────────── */}
-        <nav className="hidden rounded-full border border-line p-[5px] text-sm md:flex md:gap-1">
+        <nav aria-label="Primary" className="hidden rounded-full border border-line p-[5px] text-sm md:flex md:gap-1.5">
           {NAV.map((item) => {
             const active = isActive(item.href);
             return (
               <Magnetic key={item.href} strength={6}>
                 <TransitionLink
                   href={item.href}
-                  className="relative block rounded-full px-4 py-2 transition-colors"
+                  className="relative isolate block rounded-full px-[18px] py-2.5 transition-colors"
                   style={{ color: active ? "var(--color-tar)" : undefined }}
+                  aria-current={active ? "page" : undefined}
                 >
                   {active && (
                     <motion.span
@@ -84,7 +85,7 @@ export default function Nav() {
                       className="absolute inset-0 -z-10 rounded-full bg-hazmat"
                     />
                   )}
-                  {item.label}
+                  <span className="relative z-10">{item.label}</span>
                 </TransitionLink>
               </Magnetic>
             );
