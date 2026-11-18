@@ -4,6 +4,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { SUGGESTIONS, answerFor, tokenize } from "@/lib/ask";
 import { EASE_OUT } from "@/lib/motion";
+import ElementTile from "./ElementTile";
+import Magnetic from "./Magnetic";
+import SectionStamp from "./SectionStamp";
 
 type Source = "claude" | "canned";
 type Turn = { question: string; text: string; done: boolean; source: Source };
@@ -115,29 +118,36 @@ export default function AskBar() {
   const streaming = turn !== null && !turn.done;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-5">
+      <SectionStamp index="02" label="Intercom" />
+
       <form
         onSubmit={(e) => {
           e.preventDefault();
           void ask(value);
         }}
-        className="flex items-center gap-2 rounded-full border border-line-2 bg-surface-2 p-[6px] pl-[18px] md:gap-3 md:p-2.5 md:pl-[22px]"
+        className="flex items-center gap-3 border-b border-line pb-3 transition-colors focus-within:border-crystal md:gap-4"
       >
+        <span className="font-mono text-lg text-crystal" aria-hidden>
+          &gt;
+        </span>
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
           maxLength={500}
-          placeholder="Ask my portfolio anything…"
-          aria-label="Ask my portfolio anything"
-          className="min-w-0 flex-1 bg-transparent text-[15px] text-bone outline-none placeholder:text-mute-2 md:text-base"
+          placeholder="ask the lab anything…"
+          aria-label="Ask the lab anything"
+          className="min-w-0 flex-1 bg-transparent font-display text-[18px] text-bone outline-none placeholder:text-smoke md:text-[22px]"
         />
-        <button
-          type="submit"
-          data-cursor="ask ↵"
-          className="flex-none rounded-full bg-lime px-[18px] py-3 text-sm font-semibold text-ink transition-transform duration-200 ease-boing hover:scale-[1.04] active:scale-95 md:px-5 md:text-[15px]"
-        >
-          Ask<span className="hidden md:inline"> ↵</span>
-        </button>
+        <Magnetic>
+          <button
+            type="submit"
+            data-cursor="ask"
+            className="flex-none rounded-full bg-hazmat px-5 py-2.5 font-mono text-[13px] font-medium text-tar transition-transform duration-200 ease-boing hover:scale-[1.04] active:scale-95"
+          >
+            ask ↵
+          </button>
+        </Magnetic>
       </form>
 
       <AnimatePresence>
@@ -149,44 +159,45 @@ export default function AskBar() {
             transition={{ duration: 0.35, ease: EASE_OUT }}
             className="overflow-hidden"
           >
-            <div className="rounded-[18px] border border-line bg-surface p-5">
-              <div className="mb-3 flex items-baseline gap-2 font-mono text-[11px] text-mute-3">
-                <span className="text-lime">&gt;</span>
-                <span className="text-mute-2">{turn.question}</span>
+            <div className="rounded-[20px] border border-line bg-lab p-5 md:p-6">
+              <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+                <span className="font-mono text-[12px] text-smoke">
+                  <span className="text-crystal">&gt;</span> {turn.question}
+                </span>
+                <span className="lab-label text-smoke">
+                  response · {turn.source === "canned" ? "canned" : "grounded"}
+                </span>
               </div>
               <p
                 aria-live="polite"
-                className="m-0 text-[15px] leading-[1.55] text-mute-1 md:text-base"
+                className="m-0 font-mono text-[14px] leading-[1.65] text-bone/90 md:text-[15px]"
               >
                 {turn.text}
                 {streaming && (
-                  <span className="caret-blink ml-0.5 inline-block h-[0.95em] w-[7px] translate-y-[1px] bg-lime align-middle" />
+                  <span className="caret-blink ml-0.5 inline-block h-[0.95em] w-[7px] translate-y-[1px] bg-crystal align-middle" />
                 )}
               </p>
-              {turn.done && turn.source === "canned" && (
-                <p className="mt-4 mb-0 font-mono text-[10px] text-mute-4">
-                  canned response · not a live model call
-                </p>
-              )}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
       {!turn && (
-        <div className="flex flex-wrap gap-2">
-          {SUGGESTIONS.map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => void ask(s)}
-              data-cursor="try it"
-              className="rounded-full border border-line-2 px-3 py-1.5 font-mono text-[11px] text-mute-2 transition-colors hover:border-lime hover:text-lime"
-            >
-              {s}
-            </button>
+        <ul className="m-0 flex list-none flex-wrap gap-x-6 gap-y-3 p-0">
+          {SUGGESTIONS.map((s, i) => (
+            <li key={s}>
+              <button
+                type="button"
+                onClick={() => void ask(s)}
+                data-cursor="try it"
+                className="group flex items-center gap-3 text-left"
+              >
+                <ElementTile element={{ symbol: `Q${i + 1}`, number: 0, name: s }} size="md" tone="outline" className="transition-colors group-hover:bg-lab" />
+                <span className="font-mono text-[12px] text-smoke transition-colors group-hover:text-bone">{s}</span>
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

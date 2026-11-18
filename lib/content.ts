@@ -7,6 +7,9 @@
 export const SITE = {
   name: "Parth Sood",
   role: "applied_ai_engineer",
+  title: "Applied AI engineer",
+  roleLine: "APPLIED AI ENGINEER · ASPECT RATIO · PUNE",
+  stamp: "99.1% PURE · NO HALF MEASURES",
   email: "parthsood45@gmail.com",
   handle: "@psood708",
   footerNote: "made with Next.js, not by an LLM (mostly)",
@@ -15,16 +18,13 @@ export const SITE = {
 /** `~/parth{ext}` — the nav logo cycles these on click. */
 export const EXTENSIONS = [".sood", ".dev", ".ai", ".exe", ".tsx", ".py"] as const;
 
-/** The green word in the headline. Click rerolls. */
-export const HEADLINE_WORDS = [
-  "real work",
-  "your chores",
-  "the math",
-  "nice things",
-  "less dumb stuff",
-] as const;
+/**
+ * The hazmat word in the sub-headline: `Pure, applied AI. [word] of the time.`
+ * Click rerolls. Deliberately short so the line never re-wraps.
+ */
+export const HEADLINE_WORDS = ["99.1%", "Most", "All", "Some", "Enough"] as const;
 
-/** Bio register, selected by the temperature slider. */
+/** Bio register. Indexed by the purity dial — see `bioForPurity`. */
 export const BIO_REGISTERS: { max: number; text: string }[] = [
   {
     max: 0.4,
@@ -44,8 +44,26 @@ export const BIO_REGISTERS: { max: number; text: string }[] = [
   },
 ];
 
-export function bioFor(temp: number): string {
-  return (BIO_REGISTERS.find((r) => temp < r.max) ?? BIO_REGISTERS.at(-1)!).text;
+/** The dial tops out at the famous number. */
+export const PURITY_MAX = 99.1;
+export const PURITY_DEFAULT = 99.1;
+
+/**
+ * Dropping purity degrades the bio. Lab grade is sharp and playful; a clean
+ * batch is friendly; a cut one is formal; a contaminated one is the poem.
+ */
+export function bioForPurity(purity: number): string {
+  if (purity >= 99) return BIO_REGISTERS[2].text;
+  if (purity >= 85) return BIO_REGISTERS[1].text;
+  if (purity >= 50) return BIO_REGISTERS[0].text;
+  return BIO_REGISTERS[3].text;
+}
+
+export function purityLabel(purity: number): string {
+  if (purity >= 99) return "lab grade";
+  if (purity >= 85) return "clean";
+  if (purity >= 50) return "cut";
+  return "contaminated";
 }
 
 /** Fired off by the hallucinations toggle, one per flip. */
@@ -82,6 +100,8 @@ export type Project = {
   metricLabel: string;
   year: string;
   shot: string;
+  /** Optional real screenshot. Path relative to /public, e.g. "/work/memoryweave.png" */
+  img?: string;
   href: string;
   tags: Tag[];
 };
@@ -171,17 +191,21 @@ export const PROJECTS: Project[] = [
 export const FEATURED = PROJECTS.slice(0, 4);
 
 export type LabEntry = {
+  slug: string;
   name: string;
   line: string;
-  status: "shipped" | "cooking" | "broke it";
+  status: "shipped" | "reacting" | "broke it";
   date: string;
   shot: string;
+  /** Optional real screenshot. Path relative to /public, e.g. "/lab/finfun.png" */
+  img?: string;
   rot: number;
   href: string;
 };
 
 export const LAB: LabEntry[] = [
   {
+    slug: "facility-compliance",
     name: "Facility Compliance",
     line: "Enter a facility's design spec, get back which regulatory frameworks it meets and what to change.",
     status: "shipped",
@@ -191,6 +215,7 @@ export const LAB: LabEntry[] = [
     href: "https://facility-planning.vercel.app",
   },
   {
+    slug: "finfun",
     name: "FinFun",
     line: "Personal expense tracker. The one I actually use to find out where the money went.",
     status: "shipped",
@@ -200,15 +225,17 @@ export const LAB: LabEntry[] = [
     href: "https://github.com/psood708/FinFun",
   },
   {
+    slug: "pairs-trading",
     name: "Pairs Trading",
     line: "Cointegration-based statistical arbitrage, worked through in notebooks.",
-    status: "cooking",
+    status: "reacting",
     date: "Oct 2023",
     shot: "spread chart",
     rot: -1,
     href: "https://github.com/psood708/Pairs_Trading_Project",
   },
   {
+    slug: "momacmo",
     name: "MoMacMo",
     line: "AWS application built and deployed during the MoMacMo internship.",
     status: "shipped",
@@ -237,21 +264,24 @@ export const STACK = [
 export const PRINCIPLES = [
   {
     index: "01 / prototype",
-    title: "Hack it together in a day",
+    title: "Respect the chemistry",
     body: "A working ugly thing beats a pretty slide.",
-    bg: "var(--color-lime)",
+    bg: "var(--color-element)",
+    fg: "var(--color-bone)",
   },
   {
     index: "02 / measure",
-    title: "Write the evals first",
+    title: "Know your purity",
     body: "If you can’t score it, you can’t ship it.",
-    bg: "var(--color-violet)",
+    bg: "var(--color-hazmat)",
+    fg: "var(--color-tar)",
   },
   {
     index: "03 / harden",
-    title: "Make it boring in prod",
+    title: "No half measures",
     body: "Guardrails, fallbacks, dashboards, sleep.",
-    bg: "var(--color-bone)",
+    bg: "var(--color-sand)",
+    fg: "var(--color-tar)",
   },
 ] as const;
 
@@ -294,15 +324,28 @@ export const INTERESTS = [
 export const NAV = [
   { label: "Home", href: "/" },
   { label: "Work", href: "/work" },
-  { label: "Lab", href: "/lab" },
   { label: "About", href: "/about" },
 ] as const;
 
-/** `+ data` button copy, keyed off the training percentage. */
+export const CONTACT_LABEL = "Say my name";
+
+/** The sand panel on the home page. */
+export const RV_COPY = {
+  title: "Not everything is a batch.",
+  sub: "Some of it was built in the RV.",
+  cta: "open the RV ↗",
+} as const;
+
+export const FOOTER = {
+  sendoff: "Say my name.",
+  aside: "(it’s Parth)",
+} as const;
+
+/** `+ precursor` button copy, keyed off the yield percentage. */
 export function trainMessage(pct: number): string {
-  if (pct >= 100) return "agi achieved (jk)";
-  if (pct === 0) return "model: hungry";
-  return `training… ${pct}%`;
+  if (pct >= 100) return "yield: 100% (jk)";
+  if (pct === 0) return "batch: empty";
+  return `reacting… ${pct}%`;
 }
 
 /** Message-box footer. ~4 chars per token, same as the design. */

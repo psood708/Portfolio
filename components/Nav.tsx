@@ -1,114 +1,161 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import { EXTENSIONS, NAV } from "@/lib/content";
-import { BOING, EASE_OUT } from "@/lib/motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "framer-motion";
+import { useEffect, useState } from "react";
+import { CONTACT_LABEL, EXTENSIONS, NAV } from "@/lib/content";
+import { LOGO_TILE } from "@/lib/elements";
+import { BOING, EASE_WIPE, clipUp } from "@/lib/motion";
+import ElementTile from "./ElementTile";
+import Magnetic from "./Magnetic";
+import TransitionLink from "./TransitionLink";
 
 export default function Nav() {
   const pathname = usePathname();
   const [ext, setExt] = useState(0);
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 24));
+
+  // Route change closes the menu; the menu locks the page behind it.
+  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
 
   const onContact = pathname === "/contact";
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-transparent bg-ink/85 backdrop-blur-md">
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-[18px] md:px-8 md:py-5">
-        {/* ── ~/parth{ext} — click cycles the extension ─────────────────── */}
+    <header
+      className="sticky top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300"
+      style={{
+        background: scrolled ? "color-mix(in oklch, var(--color-tar) 85%, transparent)" : "transparent",
+        borderColor: scrolled ? "var(--color-line)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px)" : "none",
+      }}
+    >
+      <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-4 md:px-8">
+        {/* ── [Pa]rth — click cycles the extension ───────────────────── */}
         <button
           type="button"
           onClick={() => setExt((i) => i + 1)}
           data-cursor="cd ~"
-          aria-label="Cycle domain extension"
-          className="select-none font-mono text-sm md:text-[15px]"
+          className="flex select-none items-center gap-1"
         >
-          <span className="text-lime">~/</span>
-          parth
-          <span className="hidden text-mute-3 md:inline">
+          <ElementTile element={LOGO_TILE} size="xs" />
+          <span className="font-display text-[19px] font-semibold leading-none tracking-[-0.02em]">
+            rth
+          </span>
+          <span className="hidden font-mono text-[13px] text-smoke md:inline">
             {EXTENSIONS[ext % EXTENSIONS.length]}
           </span>
+          <span className="sr-only">, cycle the extension</span>
         </button>
 
-        {/* ── desktop pill nav ──────────────────────────────────────────── */}
-        <nav className="hidden rounded-full bg-surface-2 p-[5px] text-sm md:flex md:gap-1">
+        {/* ── desktop pills ──────────────────────────────────────────── */}
+        <nav aria-label="Primary" className="hidden rounded-full border border-line p-[5px] text-sm md:flex md:gap-1.5">
           {NAV.map((item) => {
             const active = isActive(item.href);
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="relative rounded-full px-4 py-2 transition-colors"
-                style={{ color: active ? "var(--color-ink)" : undefined }}
-              >
-                {active && (
-                  <motion.span
-                    layoutId="nav-pill"
-                    transition={BOING}
-                    className="absolute inset-0 rounded-full bg-bone"
-                  />
-                )}
-                <span className="relative">{item.label}</span>
-              </Link>
+              <Magnetic key={item.href} strength={6}>
+                <TransitionLink
+                  href={item.href}
+                  className="relative isolate block rounded-full px-[18px] py-2.5 transition-colors"
+                  style={{ color: active ? "var(--color-tar)" : undefined }}
+                  aria-current={active ? "page" : undefined}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="nav-pill"
+                      transition={BOING}
+                      className="absolute inset-0 -z-10 rounded-full bg-hazmat"
+                    />
+                  )}
+                  <span className="relative z-10">{item.label}</span>
+                </TransitionLink>
+              </Magnetic>
             );
           })}
         </nav>
 
-        {/* ── Say hi ✌︎ ─────────────────────────────────────────────────── */}
-        <Link
-          href="/contact"
-          data-cursor="hey!"
-          className="hidden rounded-full border border-line-2 px-[18px] py-2.5 text-sm transition-transform duration-200 ease-boing hover:-rotate-6 hover:scale-[1.06] md:block"
-          style={
-            onContact
-              ? { background: "var(--color-bone)", color: "var(--color-ink)" }
-              : undefined
-          }
-        >
-          Say hi ✌︎
-        </Link>
+        {/* ── Say my name ─────────────────────────────────────────────── */}
+        <div className="hidden md:block">
+          {!onContact && (
+            <Magnetic>
+              <TransitionLink
+                href="/contact"
+                data-cursor="say it"
+                className="block rounded-full border px-[18px] py-2.5 text-sm transition-colors duration-200 hover:border-hazmat hover:bg-hazmat hover:text-tar"
+                style={{ borderColor: "color-mix(in oklch, var(--color-bone) 40%, transparent)" }}
+              >
+                {CONTACT_LABEL}
+              </TransitionLink>
+            </Magnetic>
+          )}
+        </div>
 
-        {/* ── mobile trigger ───────────────────────────────────────────── */}
+        {/* ── mobile trigger ─────────────────────────────────────────── */}
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          className="flex size-11 items-center justify-center rounded-full bg-surface-2 text-lg md:hidden"
+          className="relative z-[70] flex size-11 items-center justify-center rounded-full border border-line text-lg md:hidden"
+          style={open ? { background: "var(--color-hazmat)", color: "var(--color-tar)" } : undefined}
         >
           {open ? "✕" : "☰"}
         </button>
       </div>
 
+      {/* ── mobile menu: wipes up in lab green ──────────────────────── */}
       <AnimatePresence>
         {open && (
           <motion.nav
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: EASE_OUT }}
-            className="overflow-hidden border-t border-line md:hidden"
+            key="menu"
+            initial={{ clipPath: "inset(100% 0 0 0)" }}
+            animate={{ clipPath: "inset(0 0 0 0)" }}
+            exit={{ clipPath: "inset(0 0 100% 0)" }}
+            transition={{ duration: 0.5, ease: EASE_WIPE }}
+            className="fixed inset-0 z-[65] flex flex-col justify-end bg-lab px-5 pb-12 pt-24 md:hidden"
           >
-            <div className="flex flex-col px-5 py-2">
-              {[...NAV, { label: "Say hi ✌︎", href: "/contact" }].map((item) => (
-                <Link
-                  key={item.href + item.label}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-between border-b border-line py-4 text-2xl font-semibold tracking-tight last:border-0"
-                  style={
-                    isActive(item.href) ? { color: "var(--color-lime)" } : undefined
-                  }
-                >
-                  {item.label}
-                  <span className="font-mono text-xs text-mute-3">↗</span>
-                </Link>
+            <motion.div
+              initial="hidden"
+              animate="shown"
+              transition={{ staggerChildren: 0.06, delayChildren: 0.25 }}
+              className="flex flex-col"
+            >
+              {[...NAV, { label: CONTACT_LABEL, href: "/contact" }].map((item) => (
+                <motion.div key={item.href} variants={clipUp}>
+                  <TransitionLink
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="flex items-baseline justify-between border-b py-5 font-display text-[44px] font-extrabold leading-none tracking-[-0.03em]"
+                    style={{
+                      borderColor: "color-mix(in oklch, var(--color-bone) 15%, transparent)",
+                      color: isActive(item.href) ? "var(--color-hazmat)" : "var(--color-bone)",
+                      fontVariationSettings: '"wdth" 80',
+                    }}
+                  >
+                    {item.label}
+                    <span className="font-mono text-xs text-smoke">↗</span>
+                  </TransitionLink>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.nav>
         )}
       </AnimatePresence>

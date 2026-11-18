@@ -1,66 +1,57 @@
-import Link from "next/link";
 import AskBar from "@/components/AskBar";
-import FeaturedGrid from "@/components/FeaturedGrid";
-import Headline from "@/components/Headline";
-import LabPanel from "@/components/LabPanel";
-import Marquee from "@/components/Marquee";
-import ModelToys from "@/components/ModelToys";
+import Batches from "@/components/Batches";
+import CautionBand from "@/components/CautionBand";
+import Hero from "@/components/Hero";
+import Readouts from "@/components/Readouts";
 import Reveal from "@/components/Reveal";
-import TempSlider from "@/components/TempSlider";
-import { SITE } from "@/lib/content";
+import RvPanel from "@/components/RvPanel";
+import SectionStamp from "@/components/SectionStamp";
+import TransitionLink from "@/components/TransitionLink";
+import { projectImage } from "@/lib/assets";
+import { toCard } from "@/lib/cards";
+import { FEATURED, LAB } from "@/lib/content";
 
 export default function Home() {
+  const cards = FEATURED.map((p) => ({ ...toCard(p), image: projectImage(p.slug) }));
+
   return (
     <>
-      {/* ── hero ───────────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-[1280px] px-5 pb-8 pt-10 md:px-8 md:pb-12 md:pt-[88px]">
-        <p className="m-0 mb-[18px] font-mono text-xs text-mute-2 md:mb-7 md:text-sm">
-          <span className="text-lime">$</span> whoami → {SITE.role}{" "}
-          <span className="caret-blink inline-block h-[17px] w-[9px] translate-y-[3px] bg-lime align-baseline" />
-        </p>
+      <Hero />
 
-        <Headline />
+      <Readouts />
 
-        <div className="mt-8 grid grid-cols-1 items-end gap-8 md:mt-12 md:grid-cols-[minmax(0,1fr)_520px] md:gap-12">
-          <TempSlider />
-          <AskBar />
-        </div>
-
-        <div className="mt-10 md:mt-12">
-          <ModelToys />
-        </div>
+      <section className="mx-auto max-w-[1280px] px-5 pb-12 pt-14 md:px-8 md:pb-16 md:pt-20">
+        <AskBar />
       </section>
 
-      <Marquee />
+      <CautionBand />
 
-      {/* ── shipped stuff ──────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-[1280px] px-5 pb-8 pt-10 md:px-8 md:pb-8 md:pt-[72px]">
-        <Reveal className="mb-4 flex items-end justify-between gap-4 md:mb-8">
-          <h2 className="m-0 text-section font-extrabold leading-[0.95] tracking-[-0.04em]">
-            Shipped stuff
-          </h2>
-          <Link
-            href="/work"
-            data-cursor="all work"
-            className="hidden flex-none font-mono text-[13px] text-mute-2 transition-colors hover:text-lime md:block"
-          >
-            all work →
-          </Link>
-        </Reveal>
-
-        <FeaturedGrid />
-
-        <Link
-          href="/work"
-          className="mt-6 inline-block font-mono text-xs text-mute-2 md:hidden"
-        >
-          all work →
-        </Link>
+      {/* ── batches ────────────────────────────────────────────────────── */}
+      <section className="pt-10 md:pt-16">
+        <div className="mx-auto max-w-[1280px] px-5 md:px-8">
+          <SectionStamp index="03" label="Batches" className="mb-6" />
+          <Reveal kind="wipe" className="mb-6 flex items-end justify-between gap-4 md:mb-10">
+            <h2
+              className="display-condensed m-0 font-display font-extrabold leading-[0.9] tracking-[-0.03em]"
+              style={{ fontSize: "var(--text-section)" }}
+            >
+              Batches
+            </h2>
+            <TransitionLink
+              href="/work"
+              data-cursor="all batches"
+              className="flex-none font-mono text-[13px] text-smoke transition-colors hover:text-hazmat"
+            >
+              all batches ↗
+            </TransitionLink>
+          </Reveal>
+        </div>
+        <Batches cards={cards} />
       </section>
 
-      {/* ── lab teaser ─────────────────────────────────────────────────── */}
-      <section className="mx-auto mt-8 max-w-[1280px] px-5 md:mt-16 md:px-8">
-        <LabPanel />
+      {/* ── experiments ────────────────────────────────────────────────── */}
+      <section className="mx-auto mt-8 max-w-[1280px] px-5 pb-4 md:mt-16 md:px-8">
+        <RvPanel entries={LAB.map((l) => ({ name: l.name, slug: l.slug, status: l.status }))} />
       </section>
     </>
   );
